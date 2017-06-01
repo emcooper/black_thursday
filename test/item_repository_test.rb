@@ -2,11 +2,10 @@ require './test/test_helper'
 require './lib/item_repository'
 
 class ItemRepositoryTest < Minitest::Test
-  def test_it_initializes_with_items_list
+  def test_it_initializes_items_with_empty_array
     repo = ItemRepository.new
-    repo.from_csv("./data/items.csv")
 
-    assert_instance_of Item, repo.items[0]
+    assert_equal [], repo.items
   end
 
   def test_from_csv_adds_list_of_items_to_items
