@@ -1,11 +1,24 @@
 require_relative "test_helper"
-require_relative "../lib/merchant.rb"
+require_relative "../lib/merchant"
+require_relative "../lib/merchant_repository"
+require_relative "../lib/sales_engine"
 
 class MerchantTest < Minitest::Test
   def test_it_initializes_with_instance_variables
-    merchant = Merchant.new({:id => 5, :name => "Turing School"})
+    merchant = Merchant.new({:id => 5, :name => "Turing School"}, "repo_placeholder")
 
     assert_equal 5, merchant.id
     assert_equal "Turing School", merchant.name
+  end
+
+  def test_items_returns_list_of_items_with_matching_merchant_id
+    se =  SalesEngine.from_csv({
+                            :items     => "./data/items.csv",
+                            :merchants => "./data/merchants.csv",
+                            })
+    merchant = Merchant.new({:id => 12335819}, MerchantRepository.new(se))
+
+    assert_equal "Hope nr. 3", merchant.items[0].name
+
   end
 end

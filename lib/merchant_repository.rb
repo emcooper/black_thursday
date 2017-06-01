@@ -4,10 +4,11 @@ require_relative "merchant"
 
 
 class MerchantRepository
-    attr_reader :merchants
+    attr_reader :merchants, :se
 
-  def initialize
+  def initialize(se)
     @merchants = []
+    @se        = se
   end
 
   def from_csv(file_path)
@@ -16,7 +17,7 @@ class MerchantRepository
       attributes ={}
       attributes[:id]           = row[:id].to_i
       attributes[:name]         = row[:name]
-      @merchants << Merchant.new(attributes)
+      @merchants << Merchant.new(attributes, self)
     end
   end
 
