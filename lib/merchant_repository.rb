@@ -1,6 +1,6 @@
 require 'pry'
 require "csv"
-require "./lib/merchant"
+require_relative "merchant"
 
 
 class MerchantRepository
@@ -25,17 +25,17 @@ class MerchantRepository
   end
 
   def find_by_id(id_number)
-    merchant = @merchants.find do |merchant|
+    matching_merchant = @merchants.find do |merchant|
       merchant.id == id_number
     end
-    return merchant
+    return matching_merchant
   end
 
   def find_by_name(name)
-    merchant = @merchants.find do |merchant|
+    matching_merchant = @merchants.find do |merchant|
       merchant.name.downcase == name.downcase
     end
-    return merchant
+    return matching_merchant
   end
 
   def find_all_by_name(keyword)
