@@ -1,7 +1,7 @@
-require './test/test_helper'
-require './lib/item.rb'
+require_relative 'test_helper'
+require_relative '../lib/item'
 
-class ItemTest < Minitest::Test 
+class ItemTest < Minitest::Test
   def test_it_initializes_with_instance_variables
     item = Item.new({
       :id           => 20,
@@ -11,7 +11,7 @@ class ItemTest < Minitest::Test
       :created_at  => Time.new(2016, 10, 31),
       :updated_at  => Time.new(2017, 10, 31),
       :merchant_id => 56})
-      
+
     assert_equal 20, item.id
     assert_equal "Pencil", item.name
     assert_equal "You can use it to write things", item.description
@@ -19,14 +19,14 @@ class ItemTest < Minitest::Test
     assert_instance_of Time, item.created_at
     assert_instance_of Time, item.updated_at
     assert_equal 56, item.merchant_id
-  end 
-  
+  end
+
   def test_unit_price_to_dollars_returns_float
     item = Item.new({
       :unit_price  => BigDecimal.new(10.99,4)
       })
-    
+
       assert_equal 10.99, item.unit_price_to_dollars
-  end 
-  
-end 
+  end
+
+end

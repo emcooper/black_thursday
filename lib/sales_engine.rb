@@ -1,7 +1,21 @@
-# class Sales Engine
 
-# needs to initialize with instance variables
-# for each repo
+require_relative 'merchant_repository'
+require_relative 'item_repository'
 
-# needs use from_csv class method to instantialize
 
+class SalesEngine
+  attr_reader :merchants, :items
+
+  def initialize
+    @merchants = MerchantRepository.new
+    @items     = ItemRepository.new
+  end
+
+  def self.from_csv(csv_file_locations)
+    se = SalesEngine.new
+    se.merchants.from_csv(csv_file_locations[:merchants])
+    se.items.from_csv(csv_file_locations[:items])
+    return se
+  end
+
+end

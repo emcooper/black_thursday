@@ -1,8 +1,8 @@
 require 'pry'
 require "csv"
-require "./lib/item"
+require_relative "item"
 require "bigdecimal"
-require 'bigdecimal/util'
+require "bigdecimal/util"
 
 class ItemRepository
   attr_reader :items
@@ -31,17 +31,17 @@ class ItemRepository
   end
 
   def find_by_id(id_number)
-    item = @items.find do |item|
+    matching_item = @items.find do |item|
       item.id == id_number
     end
-    return item
+    return matching_item
   end
 
   def find_by_name(name)
-    item = @items.find do |item|
+    matching_item = @items.find do |item|
       item.name.downcase == name.downcase
     end
-    return item
+    return matching_item
   end
 
   def find_all_with_description(keyword)
