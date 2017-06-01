@@ -3,13 +3,13 @@ require_relative '../lib/item_repository'
 
 class ItemRepositoryTest < Minitest::Test
   def test_it_initializes_items_with_empty_array
-    repo = ItemRepository.new
+    repo = ItemRepository.new("se_placeholder")
 
     assert_equal [], repo.items
   end
 
   def test_from_csv_adds_list_of_items_to_items
-    repo = ItemRepository.new
+    repo = ItemRepository.new("se_placeholder")
     repo.from_csv("./data/items.csv")
 
     assert_instance_of Item, repo.items[0]
@@ -17,7 +17,7 @@ class ItemRepositoryTest < Minitest::Test
   end
 
   def test_item_attributes_are_correctly_formatted
-    repo = ItemRepository.new
+    repo = ItemRepository.new("se_placeholder")
     repo.from_csv("./data/items.csv")
 
     assert_instance_of Integer, repo.items[100].id
@@ -30,14 +30,14 @@ class ItemRepositoryTest < Minitest::Test
   end
 
   def test_all_returns_array_of_all_items
-    repo = ItemRepository.new
+    repo = ItemRepository.new("se_placeholder")
     repo.from_csv("./data/items.csv")
 
     assert_equal repo.items, repo.all
   end
 
   def test_find_by_id_returns_correct_item_or_nil
-    repo = ItemRepository.new
+    repo = ItemRepository.new("se_placeholder")
     repo.from_csv("./data/items.csv")
 
     assert_equal "Glitter scrabble frames", repo.find_by_id(263395617).name
@@ -45,7 +45,7 @@ class ItemRepositoryTest < Minitest::Test
   end
 
   def test_find_by_name_returns_correct_item_or_nil
-    repo = ItemRepository.new
+    repo = ItemRepository.new("se_placeholder")
     repo.from_csv("./data/items.csv")
 
     assert_equal 263395617, repo.find_by_name("Glitter scrabble frames").id
@@ -53,7 +53,7 @@ class ItemRepositoryTest < Minitest::Test
   end
 
   def test_find_by_name_is_case_insensitive
-    repo = ItemRepository.new
+    repo = ItemRepository.new("se_placeholder")
     repo.from_csv("./data/items.csv")
 
     assert_equal 263395617, repo.find_by_name("Glitter scrabble frames").id
@@ -61,7 +61,7 @@ class ItemRepositoryTest < Minitest::Test
   end
 
   def test_find_all_with_description_returns_matching_items_case_insensitive
-    repo = ItemRepository.new
+    repo = ItemRepository.new("se_placeholder")
     repo.from_csv("./data/items.csv")
 
     assert_equal "Vogue Paris Original Givenchy 2307", repo.find_all_with_description("vogue")[0].name
@@ -69,14 +69,14 @@ class ItemRepositoryTest < Minitest::Test
   end
 
   def test_find_all_with_description_returns_empty_array_for_no_match
-    repo = ItemRepository.new
+    repo = ItemRepository.new("se_placeholder")
     repo.from_csv("./data/items.csv")
 
     assert_equal [], repo.find_all_with_description("sjdkvogue")
   end
 
   def test_find_all_by_price_returns_matching_items_or_empty_array
-    repo = ItemRepository.new
+    repo = ItemRepository.new("se_placeholder")
     repo.from_csv("./data/items.csv")
 
     assert_equal "Kewtie Kuddlers", repo.find_all_by_price(60)[0].name
@@ -86,7 +86,7 @@ class ItemRepositoryTest < Minitest::Test
   end
 
   def test_find_all_by_price_in_range_returns_empty_array_or_matching_items
-    repo = ItemRepository.new
+    repo = ItemRepository.new("se_placeholder")
     repo.from_csv("./data/items.csv")
 
     assert_includes 10..15, repo.find_all_by_price_in_range(10..15)[0].unit_price
@@ -95,7 +95,7 @@ class ItemRepositoryTest < Minitest::Test
   end
 
   def test_find_all_by_merchant_id_returns_empty_array_or_list_of_matching_items
-    repo = ItemRepository.new
+    repo = ItemRepository.new("se_placeholder")
     repo.from_csv("./data/items.csv")
 
     assert_equal   "small shallow bowl two tone", repo.find_all_by_merchant_id(12334609)[3].name

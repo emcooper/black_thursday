@@ -2,16 +2,17 @@ require_relative 'test_helper'
 require_relative '../lib/merchant_repository'
 
 
+
 class MerchantRepositoryTest < Minitest::Test
 
   def test_it_initializes_merchants_with_empty_array
-    repo = MerchantRepository.new
+    repo = MerchantRepository.new("se_placeholder")
 
     assert_equal [], repo.merchants
   end
 
   def test_from_csv_adds_list_of_imerchants_to_merchants
-    repo = MerchantRepository.new
+    repo = MerchantRepository.new("se_placeholder")
     repo.from_csv("./data/merchants.csv")
 
     assert_instance_of Merchant, repo.merchants[0]
@@ -19,7 +20,7 @@ class MerchantRepositoryTest < Minitest::Test
   end
 
   def test_merchant_attributes_are_correctly_formatted
-    repo = MerchantRepository.new
+    repo = MerchantRepository.new("se_placeholder")
     repo.from_csv("./data/merchants.csv")
 
     assert_instance_of Integer, repo.merchants[100].id
@@ -28,14 +29,14 @@ class MerchantRepositoryTest < Minitest::Test
   end
 
   def test_all_returns_array_of_all_merchants
-    repo = MerchantRepository.new
+    repo = MerchantRepository.new("se_placeholder")
     repo.from_csv("./data/merchants.csv")
 
     assert_equal repo.merchants, repo.all
   end
 
   def test_find_by_id_returns_correct_merchant_or_nil
-    repo = MerchantRepository.new
+    repo = MerchantRepository.new("se_placeholder")
     repo.from_csv("./data/merchants.csv")
 
     assert_equal "SassyStrangeArt", repo.find_by_id(12334159).name
@@ -43,7 +44,7 @@ class MerchantRepositoryTest < Minitest::Test
   end
 
   def test_find_by_name_returns_correct_merchant_or_nil
-    repo = MerchantRepository.new
+    repo = MerchantRepository.new("se_placeholder")
     repo.from_csv("./data/merchants.csv")
 
     assert_equal 12334174, repo.find_by_name("Uniford").id
@@ -51,7 +52,7 @@ class MerchantRepositoryTest < Minitest::Test
   end
 
   def test_find_by_name_is_case_insensitive
-    repo = MerchantRepository.new
+    repo = MerchantRepository.new("se_placeholder")
     repo.from_csv("./data/merchants.csv")
 
     assert_equal 12334193, repo.find_by_name("TheHamAndRat").id
@@ -59,7 +60,7 @@ class MerchantRepositoryTest < Minitest::Test
   end
 
   def test_find_all_by_name_returns_empty_array_or_matching_merchants_list
-    repo = MerchantRepository.new
+    repo = MerchantRepository.new("se_placeholer")
     repo.from_csv("./data/merchants.csv")
 
     assert_equal "TheHamAndRat", repo.find_all_by_name("ham")[0].name

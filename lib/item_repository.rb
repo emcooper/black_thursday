@@ -5,10 +5,11 @@ require "bigdecimal"
 require "bigdecimal/util"
 
 class ItemRepository
-  attr_reader :items
+  attr_reader :items, :se
 
-  def initialize
+  def initialize(se)
     @items = []
+    @se    = se
   end
 
   def from_csv(file_path)
@@ -22,7 +23,7 @@ class ItemRepository
       attributes[:merchant_id]  = row[:merchant_id].to_i
       attributes[:created_at]   = DateTime.parse(row[:created_at].chomp("UTC"))
       attributes[:updated_at]   = DateTime.parse(row[:updated_at].chomp("UTC"))
-      @items << Item.new(attributes)
+      @items << Item.new(attributes, self)
     end
   end
 
