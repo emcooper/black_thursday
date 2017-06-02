@@ -26,12 +26,25 @@ class SalesAnalyst
     average(sum, number_of_items)
   end 
   
+  def average_average_price_per_merchant
+    average(sum_of_merchant_average_prices, number_of_merchants)
+  end 
+  
   def sum_of_item_prices(merchant)
     merchant.items.reduce(0) {|sum, item| sum += item.unit_price}
   end 
   
   def average(sum, number)
-    (sum/number).to_f.round(2)
+    (sum.to_d/number).round(2)
   end 
-
+  
+  def sum_of_merchant_average_prices
+    se.merchants.merchants.reduce(0) do |sum, merchant| 
+      sum += average_item_price_per_merchant(merchant.id)
+    end 
+  end 
+  
+  def number_of_merchants
+    se.merchants.merchants.count
+  end 
 end
