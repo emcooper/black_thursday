@@ -53,6 +53,16 @@ class SalesAnalystTest < Minitest::Test
     assert_equal  16.66, sa.average_item_price_per_merchant(12334105)
   end 
   
+  def test_sum_of_item_prices_returns_sum
+    sa = SalesAnalyst.new(SalesEngine.from_csv({
+                            :items     => "./data/items.csv",
+                            :merchants => "./data/merchants.csv",
+                            }))
+    merchant = sa.se.merchants.find_by_id(12334360)
+    
+    assert_equal  85, sa.sum_of_item_prices(merchant)
+  end 
+  
   def test_average_returns_rounded_average
     sa = SalesAnalyst.new(SalesEngine.from_csv({
                             :items     => "./data/items.csv",
