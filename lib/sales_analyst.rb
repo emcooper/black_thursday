@@ -30,6 +30,13 @@ class SalesAnalyst
     average(sum_of_merchant_average_prices, number_of_merchants)
   end 
   
+  def golden_items
+    sum_of_all_prices = all_item_prices.reduce(:+)
+    mean = average(sum_of_all_prices, all_items.count)
+    std_dev = standard_deviation(all_item_prices)
+    all_items.find_all {|item| item.unit_price > (std_dev * 2 + mean)}
+  end 
+  
   def sum_of_item_prices(merchant)
     merchant.items.reduce(0) {|sum, item| sum += item.unit_price}
   end 
@@ -47,4 +54,21 @@ class SalesAnalyst
   def number_of_merchants
     se.merchants.merchants.count
   end 
+  
+  def all_items 
+    se.items.items
+  end 
+  
+  def all_item_prices
+    all_items.map {|item| item.unit_price}
+  end 
+  
+  def standard_deviation(numbers)
+    mean = average(numbers.reduce(:+), numbers.count)
+    mean_dif_squared = numbers.map {|num| (num - mean) ** 2}
+    sum_of_squares = mean_dif_squared.reduce(:+)
+    Math.sqrt(sum_of_squares/numbers.count)
+  end 
 end
+
+

@@ -102,4 +102,40 @@ class SalesAnalystTest < Minitest::Test
                             
     assert_equal 475, sa.number_of_merchants 
   end 
+  
+  def test_golden_items_returns_items_2_standard_deviations_above_item_price
+    sa = new_sales_analyst
+                            
+    assert_instance_of Item, sa.golden_items[0]
+    assert_equal 5, sa.golden_items.count
+  end 
+  
+  def test_all_items_returns_array_of_all_items
+    sa = new_sales_analyst
+    
+    assert_instance_of Item, sa.all_items[0]
+    assert_equal 1367, sa.all_items.count
+  end 
+  
+  def test_all_item_prices_returns_array_of_prices
+    sa = new_sales_analyst
+    
+    assert_instance_of BigDecimal, sa.all_item_prices[0]
+    assert_equal 1367, sa.all_item_prices.count
+  end 
+  
+  def test_standard_deviation_returns_standard_deviation
+    sa = new_sales_analyst
+    
+    assert_equal 12.474, sa.standard_deviation([3,5,10,30,32]).round(3)
+    assert_equal 34.684, sa.standard_deviation([89,5,21,5]).round(3)
+  end 
+  
+  def new_sales_analyst
+    SalesAnalyst.new(SalesEngine.from_csv({
+                            :items     => "./data/items.csv",
+                            :merchants => "./data/merchants.csv",
+                            }))
+    
+  end 
 end
