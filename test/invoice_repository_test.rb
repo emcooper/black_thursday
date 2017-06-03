@@ -47,5 +47,24 @@ class InvoiceRepositoryTest < Minitest::Test
     assert_equal 5, repo.find_all_by_customer_id(6).count
     assert_equal [], repo.find_all_by_customer_id(100)
   end 
-
+  
+  def test_find_all_by_merchant_id_returns_empty_array_or_invoices
+    repo = InvoiceRepository.new(SalesEngine.new)
+    repo.from_csv("test/data/it-2/invoices.csv")
+    
+    assert_instance_of Invoice, repo.find_all_by_merchant_id(12334105)[0]
+    assert_equal 1, repo.find_all_by_merchant_id(12334105).count
+    assert_equal 10, repo.find_all_by_merchant_id(12334112).count
+    assert_equal [], repo.find_all_by_merchant_id(100)
+  end 
+  def test_find_all_by_status_returns_empty_array_or_invoices
+    repo = InvoiceRepository.new(SalesEngine.new)
+    repo.from_csv("test/data/it-2/invoices.csv")
+    
+    assert_instance_of Invoice, repo.find_all_by_status("shipped")[0]
+    assert_equal 17, repo.find_all_by_status("shipped").count
+    assert_equal 5, repo.find_all_by_status("returned").count
+    assert_equal 10, repo.find_all_by_status("pending").count
+    assert_equal [], repo.find_all_by_status("invalid_status")
+  end 
 end 
