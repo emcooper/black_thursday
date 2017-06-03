@@ -69,6 +69,8 @@ class SalesAnalyst
     sum_of_squares = mean_dif_squared.reduce(:+)
     Math.sqrt(sum_of_squares/numbers.count)
   end 
+  
+  
 end
 
 

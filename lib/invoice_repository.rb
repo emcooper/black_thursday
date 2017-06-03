@@ -6,7 +6,7 @@ class InvoiceRepository
 
   def initialize(se)
     @invoices = []
-    @se    = se
+    @se       = se
   end
   
   def from_csv(file_path)
