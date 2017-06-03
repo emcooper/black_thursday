@@ -23,6 +23,23 @@ class InvoiceRepository
     end
   end
   
+  def all 
+    @invoices
+  end 
   
+  def find_by_id(id_number)
+    @invoices.find {|invoice| invoice.id == id_number}
+  end
   
+  def find_all_by_customer_id(customer_id)
+    matching_invoices = []
+    matching_invoices << @invoices.find_all {|invoice| invoice.customer_id == customer_id}
+    return matching_invoices.flatten.compact
+  end
+
+  
+# find_all_by_customer_id - returns either [] or one or more matches which have a matching customer ID
+# find_all_by_merchant_id - returns either [] or one or more matches which have a matching merchant ID
+# find_all_by_status
+
 end 
