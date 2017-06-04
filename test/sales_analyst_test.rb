@@ -148,13 +148,18 @@ class SalesAnalystTest < Minitest::Test
     assert_equal ["Monday", "Sunday"], sa.top_days_by_invoice_count
   end 
   
-  def test_invoice_status_returns_percent
-    skip
+  def test_invoice_subcount_returns_number_matching_status
     sa = new_sales_analyst_with_merchants_and_invoices_fixtures
     
-    assert_equal 56.9, sa.invoice_status(:pending)
-    assert_equal 18.97, sa.invoice_status(:shipped)
-    assert_equal 24.14, sa.invoice_status(:returned)
+    assert_equal 33, sa.invoice_subcount(:shipped)
+  end 
+  
+  def test_invoice_status_returns_percent
+    sa = new_sales_analyst_with_merchants_and_invoices_fixtures
+    
+    assert_equal 56.9, sa.invoice_status(:shipped)
+    assert_equal 18.97, sa.invoice_status(:returned)
+    assert_equal 24.14, sa.invoice_status(:pending)
   end 
   
   def new_sales_analyst_with_items_and_merchants

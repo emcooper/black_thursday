@@ -37,6 +37,39 @@ class SalesAnalyst
     all_items.find_all {|item| item.unit_price > (std_dev * 2 + mean)}
   end 
   
+  def average_invoices_per_merchant
+    average(se.invoices.invoices.count, number_of_merchants)
+  end 
+  
+  def average_invoices_per_merchant_standard_deviation
+    invoice_num_per_merchant = all_merchants.map {|merch| merch.invoices.count}
+    standard_deviation(invoice_num_per_merchant).round(2)
+  end 
+  
+  def top_merchants_by_invoice_count
+    all_merchants.find_all  do |merch| 
+      merch.invoices.count > average_invoices_per_merchant + average_invoices_per_merchant_standard_deviation * 2
+    end 
+  end 
+  
+  def bottom_merchants_by_invoice_count
+    all_merchants.find_all  do |merch| 
+      merch.invoices.count < average_invoices_per_merchant - average_invoices_per_merchant_standard_deviation * 2
+    end 
+  end 
+  
+  def invoice_count_by_day
+    all_invoices.reduce(Hash.new(0)) do |h, invoice| 
+      h[invoice.created_at.strftime("%A")] += 1 ; h
+    end
+  end 
+  
+  def invoice_status(status)
+    total = all_invoices.count
+    subcount = invoice_subcount(status)
+    (subcount/total * 100).round(2)
+  end 
+  
   def sum_of_item_prices(merchant)
     merchant.items.reduce(0) {|sum, item| sum += item.unit_price}
   end 
@@ -70,13 +103,17 @@ class SalesAnalyst
     Math.sqrt(sum_of_squares/(numbers.count - 1))
   end 
   
-  def average_invoices_per_merchant
-    average(se.invoices.invoices.count, number_of_merchants)
+  def top_days_by_invoice_count
+    avg_per_day = average(all_invoices.count, 7)
+    std_dev = standard_deviation(invoice_count_by_day.values)
+    top_days = invoice_count_by_day.select {|k, v| v > avg_per_day + std_dev}
+    top_days.keys
   end 
   
-  def average_invoices_per_merchant_standard_deviation
-    invoice_count_per_merchant = all_merchants.map {|merchant| merchant.invoices.count}
-    standard_deviation(invoice_count_per_merchant).round(2)
+  def invoice_subcount(status)
+    all_invoices.reduce(0.0) do |count, invoice| 
+      count += 1 if invoice.status.to_sym == status; count
+    end
   end 
   
   def all_merchants
@@ -85,31 +122,6 @@ class SalesAnalyst
   
   def all_invoices
     se.invoices.invoices
-  end 
-  
-  def top_merchants_by_invoice_count
-    all_merchants.find_all  do |merchant| 
-      merchant.invoices.count > average_invoices_per_merchant + average_invoices_per_merchant_standard_deviation * 2
-    end 
-  end 
-  
-  def bottom_merchants_by_invoice_count
-    all_merchants.find_all  do |merchant| 
-      merchant.invoices.count < average_invoices_per_merchant - average_invoices_per_merchant_standard_deviation * 2
-    end 
-  end 
-  
-  def invoice_count_by_day
-    all_invoices.reduce(Hash.new(0)) do |h, invoice| 
-      h[invoice.created_at.strftime("%A")] += 1 ; h
-    end
-  end 
-  
-  def top_days_by_invoice_count
-    avg_per_day = average(all_invoices.count, 7)
-    std_dev = standard_deviation(invoice_count_by_day.values)
-    top_days = invoice_count_by_day.select {|k, v| v > avg_per_day + std_dev}
-    top_days.keys
   end 
 end
 
