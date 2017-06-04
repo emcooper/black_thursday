@@ -31,7 +31,7 @@ class TransactionTest < Minitest::Test
     transaction = se.transactions.transactions[0]
 
     assert_instance_of Invoice, transaction.invoices
-    assert_equal "pending", treansaction.invoices.find_by_id(1)[0].status
+    assert_equal "pending", transactions.invoices.find_by_id(1)[0].status
     assert_nil    t.invoices.find_by_id(000)
   end
 
