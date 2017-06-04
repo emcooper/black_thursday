@@ -44,7 +44,6 @@ class InvoiceItemRepository
     end
     return [] if matching_items.nil?
     return matching_items
-
   end
 
   def find_all_by_invoice_id(invoice_id)
@@ -54,6 +53,4 @@ class InvoiceItemRepository
     return [] if matching_items.nil?
     return matching_items
   end
-
-
 end
