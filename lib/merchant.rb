@@ -10,4 +10,8 @@ class Merchant
   def items
     @repo.se.items.find_all_by_merchant_id(@id)
   end
+  
+  def invoices 
+    @repo.se.invoices.find_all_by_merchant_id(@id)
+  end 
 end

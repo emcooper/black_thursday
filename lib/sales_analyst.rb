@@ -67,8 +67,13 @@ class SalesAnalyst
     mean = average(numbers.reduce(:+), numbers.count)
     mean_dif_squared = numbers.map {|num| (num - mean) ** 2}
     sum_of_squares = mean_dif_squared.reduce(:+)
-    Math.sqrt(sum_of_squares/numbers.count)
+    Math.sqrt(sum_of_squares/(numbers.count - 1))
   end 
+  
+  def average_invoices_per_merchant
+    average(se.invoices.invoices.count, number_of_merchants)
+  end 
+  
   
   
 end

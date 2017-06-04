@@ -21,4 +21,13 @@ class InvoiceTest < Minitest::Test
     assert_equal "repo_placeholder", invoice.repo
   end
   
+  def test_merchant_returns_merchant 
+    se =  SalesEngine.from_csv({:invoices  => "test/data/it-2/invoices.csv",
+                                :merchants => "./data/merchants.csv",})                    
+    invoice = se.invoices.invoices[0]
+    
+    assert_instance_of Merchant, invoice.merchant
+    assert_equal "Shopin1901", invoice.merchant.name
+  end 
+  
 end 

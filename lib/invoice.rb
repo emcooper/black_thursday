@@ -11,5 +11,8 @@ class Invoice
     @repo         = repo
   end
 
+  def merchant 
+    @repo.se.merchants.find_by_id(@merchant_id)
+  end 
   
 end
