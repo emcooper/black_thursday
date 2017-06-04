@@ -117,14 +117,44 @@ class SalesAnalystTest < Minitest::Test
   def test_average_invoices_per_merchant_returns_average
     sa = new_sales_analyst_with_merchants_and_invoices_fixtures
     
-    assert_equal 5.2, sa.average_invoices_per_merchant
+    assert_equal 5.27, sa.average_invoices_per_merchant
   end 
   
   def test_average_invoices_per_merchant_standard_deviation_returns_standard_deviation
+    sa = new_sales_analyst_with_merchants_and_invoices_fixtures
+    
+    assert_equal 2.1, sa.average_invoices_per_merchant_standard_deviation
+  end 
+  
+  def test_top_merchants_by_invoice_count_returns_merchants
+    sa = new_sales_analyst_with_merchants_and_invoices_fixtures
+    
+    assert_equal 1, sa.top_merchants_by_invoice_count.count
+    assert_equal 10, sa.top_merchants_by_invoice_count[0].invoices.count
+    assert_instance_of Merchant, sa.top_merchants_by_invoice_count[0]
+  end 
+  
+  def test_bottom_merchants_by_invoice_count_returns_merchants
+    sa = new_sales_analyst_with_merchants_and_invoices_fixtures
+    
+    assert_equal 1, sa.bottom_merchants_by_invoice_count.count
+    assert_equal 1, sa.bottom_merchants_by_invoice_count[0].invoices.count
+    assert_instance_of Merchant, sa.bottom_merchants_by_invoice_count[0]
+  end 
+  
+  def test_top_days_by_invoice_count_returns_days
+    sa = new_sales_analyst_with_merchants_and_invoices_fixtures
+    
+    assert_equal ["Monday", "Sunday"], sa.top_days_by_invoice_count
+  end 
+  
+  def test_invoice_status_returns_percent
     skip
     sa = new_sales_analyst_with_merchants_and_invoices_fixtures
     
-    assert_equal 5.33, sa.average_invoices_per_merchant
+    assert_equal 56.9, sa.invoice_status(:pending)
+    assert_equal 18.97, sa.invoice_status(:shipped)
+    assert_equal 24.14, sa.invoice_status(:returned)
   end 
   
   def new_sales_analyst_with_items_and_merchants
