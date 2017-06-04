@@ -117,6 +117,13 @@ class SalesAnalystTest < Minitest::Test
   def test_average_invoices_per_merchant_returns_average
     sa = new_sales_analyst_with_merchants_and_invoices_fixtures
     
+    assert_equal 5.2, sa.average_invoices_per_merchant
+  end 
+  
+  def test_average_invoices_per_merchant_standard_deviation_returns_standard_deviation
+    skip
+    sa = new_sales_analyst_with_merchants_and_invoices_fixtures
+    
     assert_equal 5.33, sa.average_invoices_per_merchant
   end 
   
