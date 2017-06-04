@@ -11,6 +11,10 @@ class MerchantRepository
     @se        = se
   end
 
+  def inspect
+    "#<#{self.class} #{@merchants.size} rows>"
+  end
+
   def from_csv(file_path)
     contents = CSV.open file_path, headers: true, header_converters: :symbol
     contents.each do |row|

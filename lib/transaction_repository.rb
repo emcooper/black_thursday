@@ -1,4 +1,4 @@
-require "CSV"
+#require "CSV"
 require_relative "transaction"
 require_relative "sales_engine"
 
@@ -12,8 +12,12 @@ class TransactionRepository
 
   end
 
+  def inspect
+    "#<#{self.class} #{@transactions.size} rows>"
+  end
+
   def from_csv(csv_file_location)
-    contents = CSV.open file_path, headers: true, header_converters: :symbol
+    contents = CSV.open csv_file_location, headers: true, header_converters: :symbol
     contents.each do |row|
     attributes = {}
     attributes[:id]                          = row[:id].to_i
@@ -23,7 +27,8 @@ class TransactionRepository
     attributes[:result]                      = row[:result]
     attributes[:created_at]                  = DateTime.parse(row[:created_at].chomp("UTC"))
     attributes[:updated_at]                  = DateTime.parse(row[:updated_at].chomp("UTC"))
-    @transactions << Transaction.new(csv_file_location, self)
+    @transactions << Transaction.new(attributes, self)
+    end
   end
 
 end
