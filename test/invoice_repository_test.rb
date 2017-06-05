@@ -18,7 +18,7 @@ class InvoiceRepositoryTest < Minitest::Test
     assert_instance_of Invoice, repo.invoices[0]
     assert_equal 58, repo.invoices.count
     assert_equal 5, repo.invoices[4].id
-    assert_equal "pending", repo.invoices[4].status
+    assert_equal :pending, repo.invoices[4].status
   end
   
   def test_find_all_returns_all_invoices
@@ -35,7 +35,7 @@ class InvoiceRepositoryTest < Minitest::Test
     
     assert_equal 3, repo.find_by_id(14).customer_id
     assert_equal 12334113, repo.find_by_id(14).merchant_id
-    assert_equal "pending", repo.find_by_id(14).status
+    assert_equal :pending, repo.find_by_id(14).status
   end 
   
   def test_find_all_by_customer_id_returns_empty_array_or_invoices
@@ -62,10 +62,10 @@ class InvoiceRepositoryTest < Minitest::Test
     repo = InvoiceRepository.new(SalesEngine.new)
     repo.from_csv("test/data/it-2/invoices.csv")
     
-    assert_instance_of Invoice, repo.find_all_by_status("shipped")[0]
-    assert_equal 33, repo.find_all_by_status("shipped").count
-    assert_equal 11, repo.find_all_by_status("returned").count
-    assert_equal 14, repo.find_all_by_status("pending").count
-    assert_equal [], repo.find_all_by_status("invalid_status")
+    assert_instance_of Invoice, repo.find_all_by_status(:shipped)[0]
+    assert_equal 33, repo.find_all_by_status(:shipped).count
+    assert_equal 11, repo.find_all_by_status(:returned).count
+    assert_equal 14, repo.find_all_by_status(:pending).count
+    assert_equal [], repo.find_all_by_status(:invalid_status)
   end 
 end 

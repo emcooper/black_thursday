@@ -20,9 +20,9 @@ class InvoiceRepository
       attributes[:id]           = row[:id].to_i
       attributes[:customer_id]  = row[:customer_id].to_i
       attributes[:merchant_id]  = row[:merchant_id].to_i
-      attributes[:status]       = row[:status]
-      attributes[:created_at]   = DateTime.parse(row[:created_at].chomp("UTC"))
-      attributes[:updated_at]   = DateTime.parse(row[:updated_at].chomp("UTC"))
+      attributes[:status]       = row[:status].to_sym
+      attributes[:created_at]   = Time.parse(row[:created_at])
+      attributes[:updated_at]   = Time.parse(row[:updated_at])
       @invoices << Invoice.new(attributes, self)
     end
   end
