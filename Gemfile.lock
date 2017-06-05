@@ -1,5 +1,5 @@
 GEM
-  remote: https://rubygems.org/
+  remote: http://rubygems.org/
   specs:
     ast (2.3.0)
     axiom-types (0.1.1)
@@ -8,7 +8,7 @@ GEM
       thread_safe (~> 0.3, >= 0.3.1)
     cane (3.0.0)
       parallel
-    codeclimate-engine-rb (0.3.1)
+    codeclimate-engine-rb (0.4.0)
       virtus (~> 1.0)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
