@@ -9,9 +9,9 @@ class SalesEngineTest < Minitest::Test
     assert_instance_of MerchantRepository, se.merchants
     assert_instance_of ItemRepository, se.items
     assert_instance_of InvoiceRepository, se.invoices
-    # assert_instance_of InvoiceItemRepository, se.invoice_items
-    # assert_instance_of TransactionRepository, se.transactions
-    # assert_instance_of CustomerRepository, se.customers
+    assert_instance_of InvoiceItemRepository, se.invoice_items
+    assert_instance_of TransactionRepository, se.transactions
+    assert_instance_of CustomerRepository, se.customers
   end
 
   def test_from_csv_returns_sales_engine_instance

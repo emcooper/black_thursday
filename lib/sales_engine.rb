@@ -3,9 +3,10 @@ require_relative 'item_repository'
 require_relative 'invoice_repository'
 require_relative 'transaction_repository'
 require_relative 'invoice_item_repository'
+require_relative 'customer_repository'
 
 class SalesEngine
-  attr_reader :merchants, :items, :invoices, :transactions, :invoice_items
+  attr_reader :merchants, :items, :invoices, :transactions, :invoice_items, :customers
 
   def initialize
     @merchants = MerchantRepository.new(self)
@@ -13,6 +14,7 @@ class SalesEngine
     @invoices  = InvoiceRepository.new(self)
     @transactions = TransactionRepository.new(self)
     @invoice_items = InvoiceItemRepository.new(self)
+    @customers = CustomerRepository.new(self)
   end
 
   def self.from_csv(csv_file_locations)
@@ -22,6 +24,7 @@ class SalesEngine
     se.invoices.from_csv(csv_file_locations[:invoices]) if csv_file_locations[:invoices]
     se.transactions.from_csv(csv_file_locations[:transactions]) if csv_file_locations[:transactions]
     se.invoice_items.from_csv(csv_file_locations[:invoice_items]) if csv_file_locations[:invoice_items]
+    se.customers.from_csv(csv_file_locations[:customers]) if csv_file_locations[:customers]
     return se
   end
 end
