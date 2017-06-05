@@ -52,17 +52,18 @@ class SalesAnalystTest < Minitest::Test
     assert_instance_of Float, sa.average_items_per_merchant_standard_deviation
   end 
   
-  # def test_merchants_with_high_item_count_returns_array_with_merchants
-  #  sa = SalesAnalyst.new(SalesEngine.from_csv({
-  #                            :items     => "./data/items.csv",
-  #                            :merchants => "./data/merchants.csv",
-  #                            }))
-  # 
-  #  assert_instance_of Array, sa.merchants_with_high_item_count
-  #  assert 6.14 < sa.merchants_with_high_item_count.sample.items.count
-  #  refute 6.14 > sa.merchants_with_high_item_count.sample.items.count
-  # end
-  # 
+  def test_merchants_with_high_item_count_returns_array_with_merchants
+   sa = SalesAnalyst.new(SalesEngine.from_csv({
+                             :items     => "./data/items.csv",
+                             :merchants => "./data/merchants.csv",
+                             }))
+  
+   assert_instance_of Array, sa.merchants_with_high_item_count
+   assert_equal 52, sa.merchants_with_high_item_count.count
+   assert 6.14 < sa.merchants_with_high_item_count.sample.items.count
+   refute 6.14 > sa.merchants_with_high_item_count.sample.items.count
+  end
+  
   def test_sum_of_item_prices_returns_sum
     sa = new_sales_analyst_with_items_and_merchants
     
