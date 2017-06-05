@@ -25,8 +25,8 @@ class ItemRepository
       attributes[:description]  = row[:description]
       attributes[:unit_price]   = (row[:unit_price].to_d)/ 100
       attributes[:merchant_id]  = row[:merchant_id].to_i
-      attributes[:created_at]   = DateTime.parse(row[:created_at].chomp("UTC"))
-      attributes[:updated_at]   = DateTime.parse(row[:updated_at].chomp("UTC"))
+      attributes[:created_at]   = Time.parse(row[:created_at])
+      attributes[:updated_at]   = Time.parse(row[:updated_at])
       @items << Item.new(attributes, self)
     end
   end
