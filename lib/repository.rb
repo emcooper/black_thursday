@@ -1,5 +1,6 @@
 require 'pry'
 
+
 module Repository
 
   def from_csv(file_path)
@@ -10,11 +11,11 @@ module Repository
   end
   
   def child
-    return Merchant    if self.class == MerchantRepository
-    return Item        if self.class == ItemRepository
-    return Invoice     if self.class == InvoiceRepository
-    return InvoiceItem if self.class == InvoiceItemRepository
-    return Transaction if self.class == TransactionRepository
-    return Customer    if self.class == CustomerRepository
+    return Merchant    if self.class.name == "MerchantRepository"
+    return Item        if self.class.name == "ItemRepository"
+    return Invoice     if self.class.name == "InvoiceRepository"
+    return InvoiceItem if self.class.name == "InvoiceItemRepository"
+    return Transaction if self.class.name == "TransactionRepository"
+    return Customer    if self.class.name == "CustomerRepository"
   end 
 end 

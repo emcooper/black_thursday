@@ -89,7 +89,7 @@ class SalesAnalyst
   end 
   
   def all_items 
-    se.items.items
+    se.items.all
   end 
   
   def all_item_prices

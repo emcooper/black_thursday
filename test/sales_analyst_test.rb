@@ -145,7 +145,8 @@ class SalesAnalystTest < Minitest::Test
   def test_top_days_by_invoice_count_returns_days
     sa = new_sales_analyst_with_merchants_and_invoices_fixtures
     
-    assert_equal ["Monday", "Sunday"], sa.top_days_by_invoice_count
+    assert_equal ["Monday", "Sunday"], 
+    sa.top_days_by_invoice_count
   end 
   
   def test_invoice_subcount_returns_number_matching_status

@@ -5,35 +5,28 @@ class ItemRepositoryTest < Minitest::Test
   def test_it_initializes_items_with_empty_array
     repo = ItemRepository.new("se_placeholder")
 
-    assert_equal [], repo.items
+    assert_equal [], repo.all
   end
 
   def test_from_csv_adds_list_of_items_to_items
     repo = ItemRepository.new("se_placeholder")
     repo.from_csv("./data/items.csv")
 
-    assert_instance_of Item, repo.items[0]
-    assert_instance_of Item, repo.items[100]
+    assert_instance_of Item, repo.all.first
+    assert_instance_of Item, repo.all.last
   end
 
   def test_item_attributes_are_correctly_formatted
     repo = ItemRepository.new("se_placeholder")
     repo.from_csv("./data/items.csv")
 
-    assert_instance_of Integer, repo.items[100].id
-    assert_instance_of String, repo.items[100].name
-    assert_instance_of String, repo.items[100].description
-    assert_instance_of BigDecimal, repo.items[100].unit_price
-    assert_instance_of Integer, repo.items[100].merchant_id
-    assert_instance_of Time, repo.items[100].created_at
-    assert_instance_of Time, repo.items[100].updated_at
-  end
-
-  def test_all_returns_array_of_all_items
-    repo = ItemRepository.new("se_placeholder")
-    repo.from_csv("./data/items.csv")
-
-    assert_equal repo.items, repo.all
+    assert_instance_of Integer, repo.all.sample.id
+    assert_instance_of String, repo.all.sample.name
+    assert_instance_of String, repo.all.sample.description
+    assert_instance_of BigDecimal, repo.all.sample.unit_price
+    assert_instance_of Integer, repo.all.sample.merchant_id
+    assert_instance_of Time, repo.all.sample.created_at
+    assert_instance_of Time, repo.all.sample.updated_at
   end
 
   def test_find_by_id_returns_correct_item_or_nil

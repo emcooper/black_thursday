@@ -6,13 +6,13 @@ require_relative '../lib/sales_engine'
 class ItemTest < Minitest::Test
   def test_it_initializes_with_instance_variables
     item = Item.new({
-      :id           => 20,
+      :id          => "20",
       :name        => "Pencil",
       :description => "You can use it to write things",
-      :unit_price  => BigDecimal.new(10.99,4),
-      :created_at  => Time.new(2016, 10, 31),
-      :updated_at  => Time.new(2017, 10, 31),
-      :merchant_id => 56}, "repo_placeholder")
+      :unit_price  => "1099",
+      :created_at  => "2016-01-11 11:30:34 UTC",
+      :updated_at  => "2017-01-11 11:30:34 UTC",
+      :merchant_id => "56"}, "repo_placeholder")
 
     assert_equal 20, item.id
     assert_equal "Pencil", item.name
@@ -25,8 +25,13 @@ class ItemTest < Minitest::Test
 
   def test_unit_price_to_dollars_returns_float
     item = Item.new({
-      :unit_price  => BigDecimal.new(10.99,4)
-      }, "repo_placeholder")
+      :id          => "20",
+      :name        => "Pencil",
+      :description => "You can use it to write things",
+      :unit_price  => "1099",
+      :created_at  => "2016-01-11 11:30:34 UTC",
+      :updated_at  => "2017-01-11 11:30:34 UTC",
+      :merchant_id => "56"}, "repo_placeholder")
 
       assert_equal 10.99, item.unit_price_to_dollars
   end
@@ -36,7 +41,8 @@ class ItemTest < Minitest::Test
                             :items     => "./data/items.csv",
                             :merchants => "./data/merchants.csv",
                             })
-    item = Item.new({:merchant_id => 12335819}, ItemRepository.new(se))
+    #item = Item.new({:merchant_id => "12335819"}, ItemRepository.new(se))
+    item = se.items.find_by_id(263436239)
 
     assert_equal "BlaaRose", item.merchant.name
 
