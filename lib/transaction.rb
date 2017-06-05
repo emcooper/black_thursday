@@ -14,8 +14,8 @@ class Transaction
     @repo                        = repo
   end
 
-  def invoices
-    @repo.se.invoices.find_by_id(@id)
+  def invoice
+    @repo.se.invoices.find_by_id(@invoice_id)
   end
 
 end

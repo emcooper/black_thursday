@@ -31,4 +31,10 @@ class TransactionRepository
     end
   end
 
+  def all
+    @transactions
+  end
+
+
+
 end

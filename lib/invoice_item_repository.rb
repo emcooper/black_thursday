@@ -3,6 +3,7 @@ require "csv"
 require_relative "invoice_item"
 require "bigdecimal"
 require "bigdecimal/util"
+require "time"
 
 class InvoiceItemRepository
   attr_reader :invoice_items, :se
@@ -25,8 +26,8 @@ class InvoiceItemRepository
       attributes[:invoice_id]      = row[:invoice_id].to_i
       attributes[:quantity]        = row[:quantity].to_i
       attributes[:unit_price]      = (row[:unit_price].to_d)/ 100
-      attributes[:created_at]      = DateTime.parse(row[:created_at].chomp("UTC"))
-      attributes[:updated_at]      = DateTime.parse(row[:updated_at].chomp("UTC"))
+      attributes[:created_at]      = Time.parse(row[:created_at].chomp("UTC"))
+      attributes[:updated_at]      = Time.parse(row[:updated_at].chomp("UTC"))
       @invoice_items << InvoiceItem.new(attributes, self)
     end
   end
