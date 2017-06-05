@@ -32,7 +32,6 @@ class TransactionTest < Minitest::Test
 
     assert_instance_of Invoice, transaction.invoice
     assert_equal 12334633, transaction.invoice.merchant_id
-
   end
 
 end
