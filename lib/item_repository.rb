@@ -3,8 +3,10 @@ require "csv"
 require_relative "item"
 require "bigdecimal"
 require "bigdecimal/util"
+require_relative "repository"
 
 class ItemRepository
+  include Repository
   attr_reader :items, :se
 
   def initialize(se)

@@ -1,50 +1,37 @@
 require 'pry'
 require "csv"
 require_relative "merchant"
-
+require_relative "repository"
 
 class MerchantRepository
-    attr_reader :merchants, :se
+  include Repository
+  attr_reader :all, :se
 
   def initialize(se)
-    @merchants = []
-    @se        = se
+    @all      = []
+    @se       = se
   end
 
   def inspect
     "#<#{self.class} #{@merchants.size} rows>"
   end
 
-  def from_csv(file_path)
-    contents = CSV.open file_path, headers: true, header_converters: :symbol
-    contents.each do |row|
-      attributes ={}
-      attributes[:id]           = row[:id].to_i
-      attributes[:name]         = row[:name]
-      @merchants << Merchant.new(attributes, self)
-    end
-  end
-
-  def all
-    @merchants
-  end
-
   def find_by_id(id_number)
-    matching_merchant = @merchants.find do |merchant|
+    matching_merchant = @all.find do |merchant|
       merchant.id == id_number
     end
     return matching_merchant
   end
 
   def find_by_name(name)
-    matching_merchant = @merchants.find do |merchant|
+    matching_merchant = @all.find do |merchant|
       merchant.name.downcase == name.downcase
     end
     return matching_merchant
   end
 
   def find_all_by_name(keyword)
-    matching_merchants = @merchants.find_all do |merchant|
+    matching_merchants = @all.find_all do |merchant|
       merchant.name.downcase.include?(keyword.downcase)
     end
     return [] if matching_merchants.nil?

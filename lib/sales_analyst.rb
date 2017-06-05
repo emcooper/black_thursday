@@ -9,14 +9,14 @@ class SalesAnalyst
   end
 
   def average_items_per_merchant
-    total_merchant_count = se.merchants.merchants.count
+    total_merchant_count = all_merchants.count
     total_items_count    = items_per_merchant.reduce(:+).to_f
     average              = total_items_count / total_merchant_count
     return average.round(2)
   end
 
   def items_per_merchant
-    se.merchants.merchants.map {|merchant| merchant.items.count}
+    all_merchants.map {|merchant| merchant.items.count}
   end
   
   def average_item_price_for_merchant(merchant_id)
@@ -79,13 +79,13 @@ class SalesAnalyst
   end 
   
   def sum_of_merchant_average_prices
-    se.merchants.merchants.reduce(0) do |sum, merchant| 
+    all_merchants.reduce(0) do |sum, merchant| 
       sum += average_item_price_for_merchant(merchant.id)
     end 
   end 
   
   def number_of_merchants
-    se.merchants.merchants.count
+    all_merchants.count
   end 
   
   def all_items 
@@ -117,7 +117,7 @@ class SalesAnalyst
   end 
   
   def all_merchants
-    se.merchants.merchants
+    se.merchants.all
   end 
   
   def all_invoices

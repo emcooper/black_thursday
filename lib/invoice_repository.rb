@@ -1,7 +1,9 @@
 require "csv"
 require_relative "invoice"
+require_relative "repository"
 
 class InvoiceRepository
+  include Repository
   attr_reader :invoices, :se
 
   def initialize(se)

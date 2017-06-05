@@ -2,7 +2,7 @@ class Merchant
   attr_reader :id, :name, :repo
 
   def initialize(attributes, repo)
-    @id   = attributes[:id]
+    @id   = attributes[:id].to_i
     @name = attributes[:name]
     @repo = repo
   end
