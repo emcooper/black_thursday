@@ -27,6 +27,6 @@ class SalesEngineTest < Minitest::Test
                             })
     assert_instance_of Merchant, se.merchants.all.sample
     assert_instance_of Item, se.items.all.sample
-    assert_instance_of Invoice, se.invoices.invoices.sample
+    assert_instance_of Invoice, se.invoices.all.sample
   end
 end

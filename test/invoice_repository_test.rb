@@ -7,7 +7,7 @@ class InvoiceRepositoryTest < Minitest::Test
   def test_it_initializes_invoices_with_empty_invoices_array_and_sales_engine
     repo = InvoiceRepository.new(SalesEngine.new)
 
-    assert_equal [], repo.invoices
+    assert_equal [], repo.all
     assert_instance_of SalesEngine, repo.se
   end
   
@@ -15,18 +15,10 @@ class InvoiceRepositoryTest < Minitest::Test
     repo = InvoiceRepository.new(SalesEngine.new)
     repo.from_csv("test/data/it-2/invoices.csv")
 
-    assert_instance_of Invoice, repo.invoices[0]
-    assert_equal 58, repo.invoices.count
-    assert_equal 5, repo.invoices[4].id
-    assert_equal :pending, repo.invoices[4].status
-  end
-  
-  def test_find_all_returns_all_invoices
-    repo = InvoiceRepository.new(SalesEngine.new)
-    repo.from_csv("test/data/it-2/invoices.csv")
-
-    assert_instance_of Invoice, repo.all[0]
-    assert_equal repo.invoices, repo.all
+    assert_instance_of Invoice, repo.all.sample
+    assert_equal 58, repo.all.count
+    assert_equal 5, repo.all[4].id
+    assert_equal :pending, repo.all[4].status
   end
   
   def test_find_by_id_returns_correct_invoice

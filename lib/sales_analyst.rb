@@ -38,7 +38,7 @@ class SalesAnalyst
   end 
   
   def average_invoices_per_merchant
-    average(se.invoices.invoices.count, number_of_merchants).to_f
+    average(se.invoices.all.count, number_of_merchants).to_f
   end 
   
   def average_invoices_per_merchant_standard_deviation
@@ -121,7 +121,7 @@ class SalesAnalyst
   end 
   
   def all_invoices
-    se.invoices.invoices
+    se.invoices.all
   end 
 end
 
