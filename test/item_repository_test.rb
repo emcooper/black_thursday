@@ -25,8 +25,8 @@ class ItemRepositoryTest < Minitest::Test
     assert_instance_of String, repo.items[100].description
     assert_instance_of BigDecimal, repo.items[100].unit_price
     assert_instance_of Integer, repo.items[100].merchant_id
-    assert_instance_of DateTime, repo.items[100].created_at
-    assert_instance_of DateTime, repo.items[100].updated_at
+    assert_instance_of Time, repo.items[100].created_at
+    assert_instance_of Time, repo.items[100].updated_at
   end
 
   def test_all_returns_array_of_all_items
