@@ -43,12 +43,12 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 3, sa.items_per_merchant[0]
   end
   
-  def test_average_item_price_per_merchant_returns_big_decimal_average
+  def test_average_item_price_for_merchant_returns_big_decimal_average
     sa = new_sales_analyst_with_items_and_merchants
     
-    assert_equal  42.5, sa.average_item_price_per_merchant(12334360)
-    assert_equal  16.66, sa.average_item_price_per_merchant(12334105)
-    assert_instance_of BigDecimal, sa.average_item_price_per_merchant(12334105)
+    assert_equal  42.5, sa.average_item_price_for_merchant(12334360)
+    assert_equal  16.66, sa.average_item_price_for_merchant(12334105)
+    assert_instance_of BigDecimal, sa.average_item_price_for_merchant(12334105)
   end 
   
   def test_sum_of_item_prices_returns_sum
