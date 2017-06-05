@@ -1,7 +1,8 @@
 require_relative '../lib/customer'
-
+require_relative "repository"
 
 class CustomerRepository
+    include Repository
     attr_reader :all, :se
 
   def initialize(se)
@@ -11,13 +12,6 @@ class CustomerRepository
 
   def inspect
     "#<#{self.class} #{@invoice_items.size} rows>"
-  end
-
-  def from_csv(csv_file)
-    contents = CSV.open csv_file, headers: true, header_converters: :symbol
-    contents.each do |row|
-      @all << Customer.new(row, self)
-    end
   end
 
   def find_by_id(id)
