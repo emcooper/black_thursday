@@ -1,40 +1,47 @@
-#require "CSV"
 require_relative "transaction"
 require_relative "sales_engine"
 
-
 class TransactionRepository
-  attr_reader :transactions, :se
+  #include Repository
+  attr_reader :all, :se
 
   def initialize(se)
-    @transactions = []
-    @se           = se
-
+    @all = []
+    @se  = se
   end
 
   def inspect
     "#<#{self.class} #{@transactions.size} rows>"
   end
 
-  def from_csv(csv_file_location)
-    contents = CSV.open csv_file_location, headers: true, header_converters: :symbol
+  def from_csv(file_path)
+    contents = CSV.open file_path, headers: true, header_converters: :symbol
     contents.each do |row|
-    attributes = {}
-    attributes[:id]                          = row[:id].to_i
-    attributes[:invoice_id]                  = row[:invoice_id].to_i
-    attributes[:credit_card_number]          = row[:credit_card_number]
-    attributes[:credit_card_expiration_date] = row[:credit_card_expiration_date]
-    attributes[:result]                      = row[:result]
-    attributes[:created_at]                  = DateTime.parse(row[:created_at].chomp("UTC"))
-    attributes[:updated_at]                  = DateTime.parse(row[:updated_at].chomp("UTC"))
-    @transactions << Transaction.new(attributes, self)
+      @all << Transaction.new(row, self)
     end
   end
 
-  def all
-    @transactions
+  def find_by_id(id)
+    matching_transaction = @all.find {|transaction| transaction.id == id}
+    return matching_transaction
   end
 
+  def find_all_by_invoice_id(invoice_id)
+    matching_transactions = []
+    matching_transactions << @all.find_all {|transaction| transaction.invoice_id == invoice_id}
+    return matching_transactions.flatten.compact
+  end
 
+  def find_all_by_credit_card_number(card_number)
+    matching_transactions = []
+    matching_transactions << @all.find_all {|transaction| transaction.credit_card_number == card_number}
+    return matching_transactions.flatten.compact
+  end
+
+  def find_all_by_result(result)
+    matching_transactions = []
+    matching_transactions << @all.find_all {|transaction| transaction.result == result}
+    return  matching_transactions.flatten.compact
+  end
 
 end
