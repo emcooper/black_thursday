@@ -1,8 +1,9 @@
 require_relative "transaction"
 require_relative "sales_engine"
+require_relative "repository"
 
 class TransactionRepository
-  #include Repository
+  include Repository
   attr_reader :all, :se
 
   def initialize(se)
@@ -12,13 +13,6 @@ class TransactionRepository
 
   def inspect
     "#<#{self.class} #{@transactions.size} rows>"
-  end
-
-  def from_csv(file_path)
-    contents = CSV.open file_path, headers: true, header_converters: :symbol
-    contents.each do |row|
-      @all << Transaction.new(row, self)
-    end
   end
 
   def find_by_id(id)

@@ -38,9 +38,9 @@ class TransactionRepositoryTest < Minitest::Test
     tr = TransactionRepository.new(SalesEngine.new)
     tr.from_csv("./data/transactions.csv")
 
-    assert_equal      2,   tr.find_all_by_invoice_id(2179).count
-    assert_equal     767,  tr.find_all_by_invoice_id(2179)[1].id
-    assert_equal      [], tr.find_all_by_invoice_id(0000)
+    assert_equal 2,   tr.find_all_by_invoice_id(2179).count
+    assert_equal 767,  tr.find_all_by_invoice_id(2179)[1].id
+    assert_equal [], tr.find_all_by_invoice_id(0000)
   end
 
   def test_find_all_by_credit_card_number_returns_empty_array_or_matching_transactions
@@ -59,6 +59,4 @@ class TransactionRepositoryTest < Minitest::Test
     assert_equal [], tr.find_all_by_result("wrong")
     assert_equal 827, tr.find_all_by_result("failed").count
   end
-
-
 end
