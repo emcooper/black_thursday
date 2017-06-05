@@ -14,7 +14,18 @@ class SalesAnalyst
     average              = total_items_count / total_merchant_count
     return average.round(2)
   end
+#new stuff
+  def average_items_per_merchant_standard_deviation
+    standard_deviation(items_per_merchant).round(2)
+  end
 
+  # def merchants_with_high_item_count
+  #   one_sd_above_mean = average_items_per_merchant + average_items_per_merchant_standard_deviation
+  #   all_merchants.find_all  do |merch|
+  #     merch.items.count > one_sd_above_mean
+  #   end
+  # end
+#new stuff end
   def items_per_merchant
     se.merchants.merchants.map {|merchant| merchant.items.count}
   end

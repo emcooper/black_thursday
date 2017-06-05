@@ -12,7 +12,7 @@ class SalesAnalystTest < Minitest::Test
     assert_instance_of SalesEngine, sa.se
   end
 
-  def test_average_items_per_merchant_returns_corrent_value_and_format
+  def test_average_items_per_merchant_returns_correct_value_and_format
     sa = SalesAnalyst.new(SalesEngine.from_csv({
                             :items     => "./data/items.csv",
                             :merchants => "./data/merchants.csv",
@@ -21,16 +21,6 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 2.88, sa.average_items_per_merchant
     assert_instance_of Float, sa.average_items_per_merchant
 
-  end
-
-  def test_items_per_merchant_returns_array_with_number_of_items
-    sa = SalesAnalyst.new(SalesEngine.from_csv({
-                            :items     => "./data/items.csv",
-                            :merchants => "./data/merchants.csv",
-                            }))
-
-    assert_instance_of Array, sa.items_per_merchant
-    assert_equal 3, sa.items_per_merchant[0]
   end
   
   def test_items_per_merchant_returns_array_with_number_of_items
@@ -49,8 +39,30 @@ class SalesAnalystTest < Minitest::Test
     assert_equal  42.5, sa.average_item_price_for_merchant(12334360)
     assert_equal  16.66, sa.average_item_price_for_merchant(12334105)
     assert_instance_of BigDecimal, sa.average_item_price_for_merchant(12334105)
+  end
+  
+  def test_average_items_per_merchant_sd_returns_correct_value
+
+    sa = SalesAnalyst.new(SalesEngine.from_csv({
+                            :items     => "./data/items.csv",
+                            :merchants => "./data/merchants.csv",
+                            }))
+
+    assert_equal 3.26, sa.average_items_per_merchant_standard_deviation
+    assert_instance_of Float, sa.average_items_per_merchant_standard_deviation
   end 
   
+  # def test_merchants_with_high_item_count_returns_array_with_merchants
+  #  sa = SalesAnalyst.new(SalesEngine.from_csv({
+  #                            :items     => "./data/items.csv",
+  #                            :merchants => "./data/merchants.csv",
+  #                            }))
+  # 
+  #  assert_instance_of Array, sa.merchants_with_high_item_count
+  #  assert 6.14 < sa.merchants_with_high_item_count.sample.items.count
+  #  refute 6.14 > sa.merchants_with_high_item_count.sample.items.count
+  # end
+  # 
   def test_sum_of_item_prices_returns_sum
     sa = new_sales_analyst_with_items_and_merchants
     
