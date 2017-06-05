@@ -25,8 +25,8 @@ class SalesEngineTest < Minitest::Test
                             :merchants => "./data/merchants.csv",
                             :invoices  => "test/data/it-2/invoices.csv"
                             })
-    assert_instance_of Merchant, se.merchants.merchants[0]
-    assert_instance_of Item, se.items.items[0]
-    assert_instance_of Invoice, se.invoices.invoices[0]
+    assert_instance_of Merchant, se.merchants.all.sample
+    assert_instance_of Item, se.items.all.sample
+    assert_instance_of Invoice, se.invoices.all.sample
   end
 end

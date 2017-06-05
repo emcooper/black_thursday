@@ -7,13 +7,13 @@ class InvoiceItemTest < Minitest::Test
 
   def test_invoice_item_initilizes_with_instance_variables
     ii = InvoiceItem.new({
-       :id => 6,
-       :item_id => 7,
-       :invoice_id => 8,
-       :quantity => 1,
-       :unit_price => BigDecimal.new(10.99, 4),
-       :created_at => Time.now,
-       :updated_at => Time.now
+       :id => "6",
+       :item_id => "7",
+       :invoice_id => "8",
+       :quantity => "1",
+       :unit_price => "1099",
+       :created_at => "2012-03-27 14:54:09 UTC",
+       :updated_at => "2015-03-27 14:54:09 UTC"
      }, "repo_placeholder")
 
      assert_equal  6, ii.id
@@ -27,8 +27,14 @@ class InvoiceItemTest < Minitest::Test
 
   def test_unit_price_to_dollars_returns_price_of_invoice_as_float
     ii = InvoiceItem.new({
-      :unit_price  => BigDecimal.new(10.99,4)
-      }, "repo_placeholder")
+       :id => "6",
+       :item_id => "7",
+       :invoice_id => "8",
+       :quantity => "1",
+       :unit_price => "1099",
+       :created_at => "2012-03-27 14:54:09 UTC",
+       :updated_at => "2015-03-27 14:54:09 UTC"
+     }, "repo_placeholder")
 
       assert_equal 10.99, ii.unit_price_to_dollars
   end

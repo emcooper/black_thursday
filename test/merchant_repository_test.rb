@@ -1,38 +1,30 @@
 require_relative 'test_helper'
 require_relative '../lib/merchant_repository'
 
-
-
 class MerchantRepositoryTest < Minitest::Test
 
   def test_it_initializes_merchants_with_empty_array
     repo = MerchantRepository.new("se_placeholder")
 
-    assert_equal [], repo.merchants
+    assert_equal [], repo.all
+    assert_instance_of MerchantRepository, repo
   end
 
-  def test_from_csv_adds_list_of_imerchants_to_merchants
+  def test_from_csv_adds_list_of_merchants_to_merchants
     repo = MerchantRepository.new("se_placeholder")
     repo.from_csv("./data/merchants.csv")
 
-    assert_instance_of Merchant, repo.merchants[0]
-    assert_instance_of Merchant, repo.merchants[100]
+    assert_instance_of Merchant, repo.all[0]
+    assert_instance_of Merchant, repo.all[100]
   end
 
   def test_merchant_attributes_are_correctly_formatted
     repo = MerchantRepository.new("se_placeholder")
     repo.from_csv("./data/merchants.csv")
 
-    assert_instance_of Integer, repo.merchants[100].id
-    assert_instance_of String, repo.merchants[100].name
+    assert_instance_of Integer, repo.all[100].id
+    assert_instance_of String, repo.all[100].name
 
-  end
-
-  def test_all_returns_array_of_all_merchants
-    repo = MerchantRepository.new("se_placeholder")
-    repo.from_csv("./data/merchants.csv")
-
-    assert_equal repo.merchants, repo.all
   end
 
   def test_find_by_id_returns_correct_merchant_or_nil
