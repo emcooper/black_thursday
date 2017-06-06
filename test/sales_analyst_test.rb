@@ -184,11 +184,44 @@ class SalesAnalystTest < Minitest::Test
     
   end
   
+  def test_revenue_by_merchant_returns_revenue
+    se = create_sales_engine_with_it4_fixtures
+    sa = SalesAnalyst.new(se)
+    
+    assert_equal 11176.43, sa.revenue_by_merchant(12334105)
+  end 
+  
+  def test_top_revenue_earners_returns_top_merchants_of_specified_number
+    se = create_sales_engine_with_it4_fixtures
+    sa = SalesAnalyst.new(se)
+    
+    assert_equal "Shopin1901", sa.top_revenue_earners(5).first.name
+    assert_equal "Candisart", sa.top_revenue_earners(5).last.name
+    assert_equal 5, sa.top_revenue_earners(5).count
+  end 
+  
+  def test_merchant_with_pending_invoices_returns_merchants
+    se = create_sales_engine_with_it4_fixtures
+    sa = SalesAnalyst.new(se)
+    
+    assert_instance_of Merchant, sa.merchant_with_pending_invoices.sample
+    assert (sa.merchant_with_pending_invoices.map {|m| m.name}).include?("Shopin1901")
+  end 
+  
   def new_sales_analyst_with_merchants_and_invoices_fixtures
     SalesAnalyst.new(SalesEngine.from_csv({
                             :invoices  => "test/data/it-2/invoices.csv",
                             :merchants => "test/data/it-2/merchants.csv",
                             }))
     
+  end
+  
+  def create_sales_engine_with_it4_fixtures
+    se =  SalesEngine.from_csv({:invoices  => "test/data/it-4/invoices.csv",
+                                :items => "test/data/it-4/items.csv",
+                                :invoice_items => "test/data/it-4/invoice_items.csv",
+                                :transactions => "test/data/it-4/transactions.csv",
+                                :customers => "test/data/it-4/customers.csv",
+                                :merchants => "test/data/it-4/merchants.csv"})
   end
 end
