@@ -1,6 +1,7 @@
 require "csv"
 require_relative "invoice"
 require_relative "repository"
+require 'pry'
 
 class InvoiceRepository
   include Repository
@@ -29,6 +30,12 @@ class InvoiceRepository
     matching_invoices = []
     matching_invoices << @all.find_all {|invoice| invoice.merchant_id == merchant_id}
     return matching_invoices.flatten.compact
+  end
+
+  def find_all_by_date_created(date)
+    matching_invoices = []
+    matching_invoices << @all.find_all {|invoice| invoice.created_at.to_s[0..9] == date}
+    matching_invoices.flatten.compact.map {|invoice| invoice.id}
   end
 
   def find_all_by_status(status)

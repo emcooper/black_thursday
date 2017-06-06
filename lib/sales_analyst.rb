@@ -29,126 +29,130 @@ class SalesAnalyst
   def items_per_merchant
     all_merchants.map {|merchant| merchant.items.count}
   end
-  
+
   def average_item_price_for_merchant(merchant_id)
     merchant = se.merchants.find_by_id(merchant_id)
     sum = sum_of_item_prices(merchant)
     number_of_items = merchant.items.count
     average(sum, number_of_items)
-  end 
-  
+  end
+
   def average_average_price_per_merchant
     average(sum_of_merchant_average_prices, number_of_merchants)
-  end 
-  
+  end
+
   def golden_items
     sum_of_all_prices = all_item_prices.reduce(:+)
     mean = average(sum_of_all_prices, all_items.count)
     std_dev = standard_deviation(all_item_prices)
     all_items.find_all {|item| item.unit_price > (std_dev * 2 + mean)}
-  end 
-  
+  end
+
   def average_invoices_per_merchant
     average(se.invoices.all.count, number_of_merchants).to_f
-  end 
-  
+  end
+
   def average_invoices_per_merchant_standard_deviation
     invoice_num_per_merchant = all_merchants.map {|merch| merch.invoices.count}
     standard_deviation(invoice_num_per_merchant).round(2)
-  end 
-  
+  end
+
   def top_merchants_by_invoice_count
-    all_merchants.find_all  do |merch| 
+    all_merchants.find_all  do |merch|
       merch.invoices.count > average_invoices_per_merchant + average_invoices_per_merchant_standard_deviation * 2
-    end 
-  end 
-  
+    end
+  end
+
   def bottom_merchants_by_invoice_count
-    all_merchants.find_all  do |merch| 
+    all_merchants.find_all  do |merch|
       merch.invoices.count < average_invoices_per_merchant - average_invoices_per_merchant_standard_deviation * 2
-    end 
-  end 
-  
+    end
+  end
+
   def invoice_count_by_day
-    all_invoices.reduce(Hash.new(0)) do |h, invoice| 
+    all_invoices.reduce(Hash.new(0)) do |h, invoice|
       h[invoice.created_at.strftime("%A")] += 1 ; h
     end
-  end 
-  
+  end
+
   def invoice_status(status)
     total = all_invoices.count
     subcount = invoice_subcount(status)
     (subcount/total * 100).round(2)
-  end 
-  
+  end
+
   def revenue_by_merchant(merchant_id)
     invoices = @se.invoices.find_all_by_merchant_id(merchant_id)
     invoices.reduce(0) {|sum, invoice| sum += invoice.total}
-  end 
-  
+  end
+
   def top_revenue_earners(number)
     sorted_merchants = all_merchants.sort_by {|merchant| revenue_by_merchant(merchant.id)}
     sorted_merchants.reverse[0..(number-1)]
-  end 
-  
+  end
+
   def merchant_with_pending_invoices
     pending_invoices = @se.invoices.all.find_all {|invoice| invoice.status == :pending}
     merchants = pending_invoices.map {|invoice| invoice.merchant}
     merchants.uniq
-  end 
-  
+  end
+
   def sum_of_item_prices(merchant)
     merchant.items.reduce(0) {|sum, item| sum += item.unit_price}
-  end 
-  
+  end
+
   def average(sum, number)
     (sum.to_d/number).round(2)
-  end 
-  
+  end
+
   def sum_of_merchant_average_prices
-    all_merchants.reduce(0) do |sum, merchant| 
+    all_merchants.reduce(0) do |sum, merchant|
       sum += average_item_price_for_merchant(merchant.id)
-    end 
-  end 
-  
+    end
+  end
+
   def number_of_merchants
     all_merchants.count
-  end 
-  
-  def all_items 
+  end
+
+  def all_items
     se.items.all
-  end 
-  
+  end
+
   def all_item_prices
     all_items.map {|item| item.unit_price}
-  end 
-  
+  end
+
   def standard_deviation(numbers)
     mean = average(numbers.reduce(:+), numbers.count)
     mean_dif_squared = numbers.map {|num| (num - mean) ** 2}
     sum_of_squares = mean_dif_squared.reduce(:+)
     Math.sqrt(sum_of_squares/(numbers.count - 1))
-  end 
-  
+  end
+
   def top_days_by_invoice_count
     avg_per_day = average(all_invoices.count, 7)
     std_dev = standard_deviation(invoice_count_by_day.values)
     top_days = invoice_count_by_day.select {|k, v| v > avg_per_day + std_dev}
     top_days.keys
-  end 
-  
+  end
+
+  def total_revenue_by_date(date)
+    @se.invoices.fin
+
+  end
+
   def invoice_subcount(status)
-    all_invoices.reduce(0.0) do |count, invoice| 
+    all_invoices.reduce(0.0) do |count, invoice|
       count += 1 if invoice.status.to_sym == status; count
     end
-  end 
-  
+  end
+
   def all_merchants
     se.merchants.all
-  end 
-  
+  end
+
   def all_invoices
     se.invoices.all
-  end 
+  end
 end
-
