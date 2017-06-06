@@ -12,4 +12,10 @@ class Customer
     @updated_at = Time.parse(attributes[:updated_at])
     @repo       = repo
   end
+  
+  def merchants
+    invoices = @repo.se.invoices.find_all_by_customer_id(@id)
+    merchant_ids = invoices.map {|invoice| invoice.merchant_id}
+    repo.se.merchants.all.find_all {|merchant| merchant_ids.include?(merchant.id)}
+  end
 end

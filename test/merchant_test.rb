@@ -30,7 +30,7 @@ class MerchantTest < Minitest::Test
     assert_instance_of Invoice, merchant.invoices[0]
   end 
   
-  def test_customer_returns_customer
+  def test_customers_returns_customers
     se = create_sales_engine_with_it3_fixtures                  
     merchant = se.merchants.all[0]
     

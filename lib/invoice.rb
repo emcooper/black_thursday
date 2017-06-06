@@ -31,4 +31,14 @@ class Invoice
   def customer 
     @repo.se.customers.find_by_id(@customer_id)
   end 
+  
+  def is_paid_in_full?
+    results = transactions.map {|trans| trans.result}
+    results.include?("success")
+  end 
+  
+  def total 
+    invoice_items = @repo.se.invoice_items.find_all_by_invoice_id(@id)
+    invoice_items.reduce(0) {|sum, item| sum += (item.quantity * item.unit_price)}
+  end 
 end

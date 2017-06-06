@@ -59,6 +59,20 @@ class InvoiceTest < Minitest::Test
     assert_equal "Joey", invoice.customer.first_name
   end 
   
+  def test_is_paid_in_full_returns_correct_boolean
+    se = create_sales_engine_with_it3_fixtures                  
+    invoice = se.invoices.all[2]
+    
+    assert invoice.is_paid_in_full?
+  end 
+  
+  def test_total_returns_correct_total_dollar_amount
+    se = create_sales_engine_with_it3_fixtures                  
+    invoice = se.invoices.all[0]
+    
+    assert_equal 5570.75, invoice.total
+  end 
+  
   def create_sales_engine_with_it3_fixtures
     se =  SalesEngine.from_csv({:invoices  => "test/data/it-3/invoices.csv",
                                 :items => "test/data/it-3/items.csv",
