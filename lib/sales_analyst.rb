@@ -81,6 +81,22 @@ class SalesAnalyst
     (subcount/total * 100).round(2)
   end 
   
+  def revenue_by_merchant(merchant_id)
+    invoices = @se.invoices.find_all_by_merchant_id(merchant_id)
+    invoices.reduce(0) {|sum, invoice| sum += invoice.total}
+  end 
+  
+  def top_revenue_earners(number)
+    sorted_merchants = all_merchants.sort_by {|merchant| revenue_by_merchant(merchant.id)}
+    sorted_merchants.reverse[0..(number-1)]
+  end 
+  
+  def merchant_with_pending_invoices
+    pending_invoices = @se.invoices.all.find_all {|invoice| invoice.status == :pending}
+    merchants = pending_invoices.map {|invoice| invoice.merchant}
+    merchants.uniq
+  end 
+  
   def sum_of_item_prices(merchant)
     merchant.items.reduce(0) {|sum, item| sum += item.unit_price}
   end 
@@ -135,5 +151,4 @@ class SalesAnalyst
     se.invoices.all
   end 
 end
-
 
