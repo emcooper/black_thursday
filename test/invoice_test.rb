@@ -51,12 +51,20 @@ class InvoiceTest < Minitest::Test
     assert_equal "success", invoice.transactions[1].result
   end 
   
+  def test_customer_returns_customer
+    se = create_sales_engine_with_it3_fixtures                  
+    invoice = se.invoices.all[0]
+    
+    assert_instance_of Customer, invoice.customer
+    assert_equal "Joey", invoice.customer.first_name
+  end 
+  
   def create_sales_engine_with_it3_fixtures
     se =  SalesEngine.from_csv({:invoices  => "test/data/it-3/invoices.csv",
                                 :items => "test/data/it-3/items.csv",
                                 :invoice_items => "test/data/it-3/invoice_items.csv",
                                 :transactions => "test/data/it-3/transactions.csv",
-                                :customer => "test/data/it-3/customers.csv",
+                                :customers => "test/data/it-3/customers.csv",
                                 :merchants => "test/data/it-3/merchants.csv"})
   end 
   

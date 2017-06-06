@@ -1,4 +1,5 @@
 require 'time'
+require 'pry'
 
 class Invoice
   attr_reader :id, :customer_id, :merchant_id, :status, :created_at, :updated_at, :repo
@@ -27,4 +28,7 @@ class Invoice
     @repo.se.transactions.find_all_by_invoice_id(@id)
   end 
   
+  def customer 
+    @repo.se.customers.find_by_id(@customer_id)
+  end 
 end
