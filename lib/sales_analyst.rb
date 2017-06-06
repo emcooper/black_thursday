@@ -138,8 +138,9 @@ class SalesAnalyst
   end
 
   def total_revenue_by_date(date)
-    @se.invoices.fin
-
+    invoice_ids = @se.invoices.find_all_by_date_created(date)
+    invoice_items = invoice_ids.map {|id| @se.invoice_items.find_all_by_invoice_id(id)}
+    invoice_items.flatten.reduce(0) {|sum, item| sum += item.unit_price * item.quantity}
   end
 
   def invoice_subcount(status)

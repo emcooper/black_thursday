@@ -214,7 +214,6 @@ class SalesAnalystTest < Minitest::Test
       sa = SalesAnalyst.new(se)
 
       assert_equal 11176.43, sa.total_revenue_by_date("2009-02-07")
-
     end
 
 
