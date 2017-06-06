@@ -231,6 +231,17 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 1, sa.merchants_with_only_one_item.sample.items.count
   end
 
+  def test_merchants_with_only_one_item_registered_in_month_returns_merchants_list
+    se = create_sales_engine_with_it4_fixtures
+    sa = SalesAnalyst.new(se)
+    actual = sa.merchants_with_only_one_item_registered_in_month("July")
+
+    assert_instance_of Merchant, actual.sample
+    assert_equal 1, actual.sample.items.count
+    assert_equal 2, actual.count
+    assert_equal "July", actual.sample.created_at.strftime("%B")
+  end
+
   def new_sales_analyst_with_merchants_and_invoices_fixtures
     SalesAnalyst.new(SalesEngine.from_csv({
                             :invoices  => "test/data/it-2/invoices.csv",
@@ -238,7 +249,6 @@ class SalesAnalystTest < Minitest::Test
                             }))
 
   end
-
 
   def create_sales_engine_with_it4_fixtures
     se =  SalesEngine.from_csv({:invoices  => "test/data/it-4/invoices.csv",

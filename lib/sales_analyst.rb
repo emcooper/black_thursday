@@ -1,5 +1,6 @@
 require_relative 'sales_engine'
 require'pry'
+require 'date'
 
 class SalesAnalyst
   attr_reader :se
@@ -147,11 +148,14 @@ class SalesAnalyst
     @se.merchants.all.find_all {|merchant| merchant.items.count == 1}
   end
 
-
   def invoice_subcount(status)
     all_invoices.reduce(0.0) do |count, invoice|
       count += 1 if invoice.status.to_sym == status; count
     end
+  end
+
+  def merchants_with_only_one_item_registered_in_month(month)
+    merchants_with_only_one_item.find_all {|merchant| merchant.created_at.strftime("%B") == month}
   end
 
   def all_merchants
