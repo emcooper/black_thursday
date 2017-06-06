@@ -29,4 +29,23 @@ class MerchantTest < Minitest::Test
     assert_equal 4, merchant.invoices.count 
     assert_instance_of Invoice, merchant.invoices[0]
   end 
+  
+  def test_customer_returns_customer
+    se = create_sales_engine_with_it3_fixtures                  
+    merchant = se.merchants.all[0]
+    
+    assert_instance_of Customer, merchant.customers.sample
+    assert_equal 2, merchant.customers.count
+    assert_equal "Joey", merchant.customers[0].first_name
+    assert_equal "Rachel", merchant.customers[1].first_name
+  end 
+  
+  def create_sales_engine_with_it3_fixtures
+    se =  SalesEngine.from_csv({:invoices  => "test/data/it-3/invoices.csv",
+                                :items => "test/data/it-3/items.csv",
+                                :invoice_items => "test/data/it-3/invoice_items.csv",
+                                :transactions => "test/data/it-3/transactions.csv",
+                                :customers => "test/data/it-3/customers.csv",
+                                :merchants => "test/data/it-3/merchants.csv"})
+  end 
 end
