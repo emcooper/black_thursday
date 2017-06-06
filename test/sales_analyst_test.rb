@@ -216,13 +216,20 @@ class SalesAnalystTest < Minitest::Test
   end
 
 
-    def test_total_revenue_by_date_returns_dollar_amount
-      se = create_sales_engine_with_it4_fixtures
-      sa = SalesAnalyst.new(se)
+  def test_total_revenue_by_date_returns_dollar_amount
+    se = create_sales_engine_with_it4_fixtures
+    sa = SalesAnalyst.new(se)
 
-      assert_equal 11176.43, sa.total_revenue_by_date("2009-02-07")
-    end
+    assert_equal 11176.43, sa.total_revenue_by_date("2009-02-07")
+  end
 
+  def test_merchants_with_only_one_item_returns_merchants_list
+    se = create_sales_engine_with_it4_fixtures
+    sa = SalesAnalyst.new(se)
+
+    assert_instance_of Merchant, sa.merchants_with_only_one_item.sample
+    assert_equal 1, sa.merchants_with_only_one_item.sample.items.count
+  end
 
   def new_sales_analyst_with_merchants_and_invoices_fixtures
     SalesAnalyst.new(SalesEngine.from_csv({

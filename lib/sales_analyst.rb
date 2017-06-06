@@ -143,6 +143,11 @@ class SalesAnalyst
     invoice_items.flatten.reduce(0) {|sum, item| sum += item.unit_price * item.quantity}
   end
 
+  def merchants_with_only_one_item
+    @se.merchants.all.find_all {|merchant| merchant.items.count == 1}
+  end
+
+
   def invoice_subcount(status)
     all_invoices.reduce(0.0) do |count, invoice|
       count += 1 if invoice.status.to_sym == status; count
