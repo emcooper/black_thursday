@@ -31,4 +31,33 @@ class InvoiceTest < Minitest::Test
     assert_equal "Shopin1901", invoice.merchant.name
   end 
   
+  def test_items_returns_items
+    se = create_sales_engine_with_it3_fixtures                  
+    invoice = se.invoices.all[0]
+    
+    assert_equal 3, invoice.items.count
+    assert_equal "Bangle Bracelet Heart", invoice.items[0].name
+    assert_equal "iridescent", invoice.items[2].name
+  end 
+  
+  def test_transactions_returns_transactions
+    se = create_sales_engine_with_it3_fixtures                  
+    invoice = se.invoices.all[2]
+    
+    assert_equal 2, invoice.transactions.count
+    assert_equal 3, invoice.transactions[0].id
+    assert_equal 4, invoice.transactions[1].id
+    assert_equal "failed", invoice.transactions[0].result
+    assert_equal "success", invoice.transactions[1].result
+  end 
+  
+  def create_sales_engine_with_it3_fixtures
+    se =  SalesEngine.from_csv({:invoices  => "test/data/it-3/invoices.csv",
+                                :items => "test/data/it-3/items.csv",
+                                :invoice_items => "test/data/it-3/invoice_items.csv",
+                                :transactions => "test/data/it-3/transactions.csv",
+                                :customer => "test/data/it-3/customers.csv",
+                                :merchants => "test/data/it-3/merchants.csv"})
+  end 
+  
 end 

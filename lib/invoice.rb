@@ -17,4 +17,14 @@ class Invoice
     @repo.se.merchants.find_by_id(@merchant_id)
   end 
   
+  def items 
+    invoice_items = @repo.se.invoice_items.find_all_by_invoice_id(@id)
+    item_ids = invoice_items.map {|ii| ii.item_id}
+    repo.se.items.all.find_all {|item| item_ids.include?(item.id)}
+  end 
+  
+  def transactions
+    @repo.se.transactions.find_all_by_invoice_id(@id)
+  end 
+  
 end
