@@ -86,9 +86,9 @@ class SalesAnalyst
     invoices.reduce(0) {|sum, invoice| sum += invoice.total}
   end
 
-  def top_revenue_earners(number)
+  def top_revenue_earners(number = 20)
     sorted_merchants = all_merchants.sort_by {|merchant| revenue_by_merchant(merchant.id)}
-    sorted_merchants.reverse[0..(number-1)]
+    sorted_merchants.reverse[0..number-1]
   end
 
   def merchant_with_pending_invoices

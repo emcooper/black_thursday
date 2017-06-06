@@ -200,6 +200,13 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 5, sa.top_revenue_earners(5).count
   end
 
+  def test_top_revenue_earners_returns_top_20_merchants_by_default
+    se = create_sales_engine_with_it4_fixtures
+    sa = SalesAnalyst.new(se)
+
+    assert_equal 20, sa.top_revenue_earners.count
+  end
+
   def test_merchant_with_pending_invoices_returns_merchants
     se = create_sales_engine_with_it4_fixtures
     sa = SalesAnalyst.new(se)
