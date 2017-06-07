@@ -89,16 +89,22 @@ class SalesAnalyst
   end
 
   def top_revenue_earners(number = 20)
-    sorted_merchants = all_merchants.sort_by {|merchant| revenue_by_merchant(merchant.id)}
-    sorted_merchants.reverse[0..number-1]
+    merchants_ranked_by_revenue[0..number-1]
   end
+  
+  def merchants_ranked_by_revenue
+    sorted_ascending = all_merchants.sort_by do |merchant| 
+      revenue_by_merchant(merchant.id)
+    end
+    sorted_ascending.reverse
+  end 
 
   def merchants_with_pending_invoices
     pending_invoices = @se.invoices.all.find_all {|invoice| invoice.status == :pending}
     merchants = pending_invoices.map {|invoice| invoice.merchant}
     merchants.uniq
   end
-
+  
   def sum_of_item_prices(merchant)
     merchant.items.reduce(0) {|sum, item| sum += item.unit_price}
   end
