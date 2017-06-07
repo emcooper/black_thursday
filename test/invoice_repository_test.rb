@@ -30,12 +30,14 @@ class InvoiceRepositoryTest < Minitest::Test
     assert_equal :pending, repo.find_by_id(14).status
   end
 
-  def test_find_all_by_date_created_returns_invoice_ids_or_empty_array
+  def test_find_all_ids_by_date_created_returns_invoice_ids_or_empty_array
     repo = InvoiceRepository.new(SalesEngine.new)
     repo.from_csv("test/data/it-2/invoices.csv")
+    date_1 = Time.parse("2009-02-07")
+    date_2 = Time.parse("2018-02-07")
 
-    assert_equal 1, repo.find_all_by_date_created("2009-02-07")[0]
-    assert_equal [], repo.find_all_by_date_created("2017-06-06")
+    assert_equal 1, repo.find_all_ids_by_date_created(date_1)[0]
+    assert_equal [], repo.find_all_ids_by_date_created(date_2)
 
   end
 

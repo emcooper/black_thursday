@@ -207,20 +207,21 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 20, sa.top_revenue_earners.count
   end
 
-  def test_merchant_with_pending_invoices_returns_merchants
+  def test_merchants_with_pending_invoices_returns_merchants
     se = create_sales_engine_with_it4_fixtures
     sa = SalesAnalyst.new(se)
 
-    assert_instance_of Merchant, sa.merchant_with_pending_invoices.sample
-    assert (sa.merchant_with_pending_invoices.map {|m| m.name}).include?("Shopin1901")
+    assert_instance_of Merchant, sa.merchants_with_pending_invoices.sample
+    assert (sa.merchants_with_pending_invoices.map {|m| m.name}).include?("Shopin1901")
   end
 
 
   def test_total_revenue_by_date_returns_dollar_amount
     se = create_sales_engine_with_it4_fixtures
     sa = SalesAnalyst.new(se)
+    date = Time.parse("2009-02-07")
 
-    assert_equal 11176.43, sa.total_revenue_by_date("2009-02-07")
+    assert_equal 11176.43, sa.total_revenue_by_date(date)
   end
 
   def test_merchants_with_only_one_item_returns_merchants_list

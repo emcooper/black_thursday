@@ -92,7 +92,7 @@ class SalesAnalyst
     sorted_merchants.reverse[0..number-1]
   end
 
-  def merchant_with_pending_invoices
+  def merchants_with_pending_invoices
     pending_invoices = @se.invoices.all.find_all {|invoice| invoice.status == :pending}
     merchants = pending_invoices.map {|invoice| invoice.merchant}
     merchants.uniq
@@ -139,7 +139,7 @@ class SalesAnalyst
   end
 
   def total_revenue_by_date(date)
-    invoice_ids = @se.invoices.find_all_by_date_created(date)
+    invoice_ids = @se.invoices.find_all_ids_by_date_created(date)
     invoice_items = invoice_ids.map {|id| @se.invoice_items.find_all_by_invoice_id(id)}
     invoice_items.flatten.reduce(0) {|sum, item| sum += item.unit_price * item.quantity}
   end
@@ -166,3 +166,16 @@ class SalesAnalyst
     se.invoices.all
   end
 end
+
+# testing against spec harness - will delete later
+# se =  SalesEngine.from_csv({
+#   :items => "./data/items.csv",
+#   :merchants => "./data/merchants.csv",
+#   :invoices => "./data/invoices.csv",
+#   :invoice_items => "./data/invoice_items.csv",
+#   :transactions => "./data/transactions.csv",
+#   :customers => "./data/customers.csv"
+# })
+# sa = SalesAnalyst.new(se)
+# puts "spec: #{sa.revenue_by_merchant(12334634).to_i}"
+# puts "mine: #{sa.revenue_by_merchant(12334942).to_i}"
