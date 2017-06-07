@@ -196,7 +196,7 @@ class SalesAnalystTest < Minitest::Test
     sa = SalesAnalyst.new(se)
 
     assert_equal "Shopin1901", sa.top_revenue_earners(5).first.name
-    assert_equal "Candisart", sa.top_revenue_earners(5).last.name
+    assert_equal "Madewithgitterxx", sa.top_revenue_earners(5).last.name
     assert_equal 5, sa.top_revenue_earners(5).count
   end
 
