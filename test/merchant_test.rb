@@ -17,7 +17,7 @@ class MerchantTest < Minitest::Test
                             :items     => "./data/items.csv",
                             :merchants => "./data/merchants.csv",
                             })
-    merchant = Merchant.new({:id => 12335819}, MerchantRepository.new(se))
+    merchant = Merchant.new({:id => 12335819, :created_at => "2016-01-11"}, MerchantRepository.new(se))
 
     assert_equal "Hope nr. 3", merchant.items[0].name
 
@@ -25,7 +25,7 @@ class MerchantTest < Minitest::Test
 
   def test_invoices_returns_invoices
     se =  SalesEngine.from_csv({:invoices  => "test/data/it-2/invoices.csv"})
-    merchant = Merchant.new({:id => 12334115}, MerchantRepository.new(se))
+    merchant = Merchant.new({:id => 12334115, :created_at => "2016-01-11"}, MerchantRepository.new(se))
 
     assert_equal 4, merchant.invoices.count
     assert_instance_of Invoice, merchant.invoices[0]

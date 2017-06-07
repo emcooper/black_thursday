@@ -235,11 +235,14 @@ class SalesAnalystTest < Minitest::Test
     se = create_sales_engine_with_it4_fixtures
     sa = SalesAnalyst.new(se)
     actual = sa.merchants_with_only_one_item_registered_in_month("July")
+    actual_2 = sa.merchants_with_only_one_item_registered_in_month("June")
 
     assert_instance_of Merchant, actual.sample
     assert_equal 1, actual.sample.items.count
-    assert_equal 2, actual.count
+    assert_equal 1, actual.count
     assert_equal "July", actual.sample.created_at.strftime("%B")
+    assert_equal "June", actual_2.sample.created_at.strftime("%B")
+    assert_equal 3, actual_2.count
   end
 
   def new_sales_analyst_with_merchants_and_invoices_fixtures
