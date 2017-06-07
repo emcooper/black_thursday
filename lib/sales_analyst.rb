@@ -84,7 +84,8 @@ class SalesAnalyst
 
   def revenue_by_merchant(merchant_id)
     invoices = @se.invoices.find_all_by_merchant_id(merchant_id)
-    invoices.reduce(0) {|sum, invoice| sum += invoice.total}
+    paid_invoices = invoices.find_all {|invoice| invoice.is_paid_in_full?}
+    paid_invoices.reduce(0) {|sum, invoice| sum += invoice.total}
   end
 
   def top_revenue_earners(number = 20)
