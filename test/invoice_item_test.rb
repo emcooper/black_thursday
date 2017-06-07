@@ -38,5 +38,18 @@ class InvoiceItemTest < Minitest::Test
 
       assert_equal 10.99, ii.unit_price_to_dollars
   end
-
+  
+  def test_revenue_returns_quantity_times_price
+    ii = InvoiceItem.new({
+       :id => "6",
+       :item_id => "7",
+       :invoice_id => "8",
+       :quantity => "3",
+       :unit_price => "1099",
+       :created_at => "2012-03-27 14:54:09 UTC",
+       :updated_at => "2015-03-27 14:54:09 UTC"
+     }, "repo_placeholder")
+     
+     assert_equal 32.97, ii.revenue
+  end 
 end
