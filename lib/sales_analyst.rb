@@ -100,8 +100,8 @@ class SalesAnalyst
   end 
 
   def merchants_with_pending_invoices
-    pending_invoices = @se.invoices.all.find_all {|invoice| invoice.status == :pending}
-    merchants = pending_invoices.map {|invoice| invoice.merchant}
+    unpaid_invoices = @se.invoices.all.reject {|invoice| invoice.is_paid_in_full?}
+    merchants = unpaid_invoices.map {|invoice| invoice.merchant}
     merchants.uniq
   end
   
@@ -174,15 +174,3 @@ class SalesAnalyst
   end
 end
 
-# testing against spec harness - will delete later
-# se =  SalesEngine.from_csv({
-#   :items => "./data/items.csv",
-#   :merchants => "./data/merchants.csv",
-#   :invoices => "./data/invoices.csv",
-#   :invoice_items => "./data/invoice_items.csv",
-#   :transactions => "./data/transactions.csv",
-#   :customers => "./data/customers.csv"
-# })
-# sa = SalesAnalyst.new(se)
-# puts "spec: #{sa.revenue_by_merchant(12334634).to_i}"
-# puts "mine: #{sa.revenue_by_merchant(12334942).to_i}"

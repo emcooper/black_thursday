@@ -212,7 +212,7 @@ class SalesAnalystTest < Minitest::Test
     sa = SalesAnalyst.new(se)
 
     assert_instance_of Merchant, sa.merchants_with_pending_invoices.sample
-    assert (sa.merchants_with_pending_invoices.map {|m| m.name}).include?("Shopin1901")
+    assert sa.merchants_with_pending_invoices.sample.invoices.any? {|invoice| !invoice.is_paid_in_full?}
   end
 
   def test_total_revenue_by_date_returns_dollar_amount
