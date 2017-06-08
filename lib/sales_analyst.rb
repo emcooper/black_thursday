@@ -21,7 +21,8 @@ class SalesAnalyst
   end
 
   def merchants_with_high_item_count
-    one_sd_above_mean = average_items_per_merchant + average_items_per_merchant_standard_deviation
+    one_sd_above_mean = average_items_per_merchant +
+    average_items_per_merchant_standard_deviation
     all_merchants.find_all  do |merch|
       merch.items.count > one_sd_above_mean
     end
@@ -59,14 +60,18 @@ class SalesAnalyst
   end
 
   def top_merchants_by_invoice_count
+    two_sds_above_mean = average_invoices_per_merchant +
+    average_invoices_per_merchant_standard_deviation * 2
     all_merchants.find_all  do |merch|
-      merch.invoices.count > average_invoices_per_merchant + average_invoices_per_merchant_standard_deviation * 2
+      merch.invoices.count > two_sds_above_mean
     end
   end
 
   def bottom_merchants_by_invoice_count
+    two_sds_below_mean = average_invoices_per_merchant -
+    average_invoices_per_merchant_standard_deviation * 2
     all_merchants.find_all  do |merch|
-      merch.invoices.count < average_invoices_per_merchant - average_invoices_per_merchant_standard_deviation * 2
+      merch.invoices.count < two_sds_below_mean
     end
   end
 
@@ -83,37 +88,48 @@ class SalesAnalyst
   end
 
   def revenue_by_merchant(merchant_id)
-    invoices = @se.invoices.find_all_by_merchant_id(merchant_id)
-    paid_invoices = invoices.find_all {|invoice| invoice.is_paid_in_full?}
-    paid_invoices.reduce(0) {|sum, invoice| sum += invoice.total}
+    paid_invoices(merchant_id).reduce(0) {|sum, invoice| sum += invoice.total}
   end
 
   def top_revenue_earners(number = 20)
     merchants_ranked_by_revenue[0..number-1]
   end
-  
+
   def merchants_ranked_by_revenue
-    sorted_ascending = all_merchants.sort_by do |merchant| 
+    sorted_ascending = all_merchants.sort_by do |merchant|
       revenue_by_merchant(merchant.id)
     end
     sorted_ascending.reverse
-  end 
+  end
 
   def merchants_with_pending_invoices
-    unpaid_invoices = @se.invoices.all.reject {|invoice| invoice.is_paid_in_full?}
-    merchants = unpaid_invoices.map {|invoice| invoice.merchant}
+    unpaid_invoices = @se.invoices.all.reject {|inv| inv.is_paid_in_full?}
+    merchants = unpaid_invoices.map {|inv| inv.merchant}
     merchants.uniq
   end
-  
+
   def best_item_for_merchant(merchant_id)
-    invoices = @se.invoices.find_all_by_merchant_id(merchant_id)
-    paid_invoices = invoices.find_all {|invoice| invoice.is_paid_in_full?}
-    invoice_items = paid_invoices.map do |invoice| 
-      se.invoice_items.find_all_by_invoice_id(invoice.id)
-    end 
-    top_invoice_item = invoice_items.flatten.max_by {|ii| ii.revenue}
+    top_invoice_item = paid_invoice_items(merchant_id).max_by {|ii| ii.revenue}
     @se.items.find_by_id(top_invoice_item.item_id)
-  end 
+  end
+
+  def most_sold_item_for_merchant(merchant_id)
+    top_invoice_item = paid_invoice_items(merchant_id).max_by {|ii| ii.quantity}
+    all_top_invoice_items = paid_invoice_items(merchant_id).find_all do |ii|
+      ii.quantity == top_invoice_item.quantity
+    end
+    all_top_invoice_items.map {|ii| @se.items.find_by_id(ii.item_id)}
+  end
+
+  def paid_invoice_items(merchant_id)
+    invoice_ids = paid_invoices(merchant_id).map {|inv| inv.id}
+    invoice_items = invoice_items(invoice_ids)
+  end
+
+  def paid_invoices(merchant_id)
+    invoices = @se.invoices.find_all_by_merchant_id(merchant_id)
+    (invoices.find_all {|invoice| invoice.is_paid_in_full?}).flatten
+  end
 
   def sum_of_item_prices(merchant)
     merchant.items.reduce(0) {|sum, item| sum += item.unit_price}
@@ -131,10 +147,6 @@ class SalesAnalyst
 
   def number_of_merchants
     all_merchants.count
-  end
-
-  def all_items
-    se.items.all
   end
 
   def all_item_prices
@@ -157,12 +169,19 @@ class SalesAnalyst
 
   def total_revenue_by_date(date)
     invoice_ids = @se.invoices.find_all_ids_by_date_created(date)
-    invoice_items = invoice_ids.map {|id| @se.invoice_items.find_all_by_invoice_id(id)}
-    invoice_items.flatten.reduce(0) {|sum, item| sum += item.unit_price * item.quantity}
+    invoice_items = invoice_items(invoice_ids)
+    invoice_items.reduce(0) {|sum, item| sum += item.revenue}
+  end
+
+  def invoice_items(invoice_ids)
+    invoice_items = invoice_ids.map do |id|
+      @se.invoice_items.find_all_by_invoice_id(id)
+    end
+    invoice_items.flatten
   end
 
   def merchants_with_only_one_item
-    @se.merchants.all.find_all {|merchant| merchant.items.count == 1}
+    all_merchants.find_all {|merchant| merchant.items.count == 1}
   end
 
   def invoice_subcount(status)
@@ -172,25 +191,20 @@ class SalesAnalyst
   end
 
   def merchants_with_only_one_item_registered_in_month(month)
-    merchants_with_only_one_item.find_all {|merchant| merchant.created_at.strftime("%B") == month}
-  end
-
-  def most_sold_item_for_merchant(merchant_id)
-    invoices      = @se.invoices.find_all_by_merchant_id(merchant_id)
-    paid_invoices = invoices.find_all {|invoice| invoice.is_paid_in_full?}
-    invoice_ids   = paid_invoices.map {|invoice| invoice.id}
-    invoice_items = invoice_ids.map {|id| @se.invoice_items.find_all_by_invoice_id(id)}
-    top_invoice_item_by_quantity = invoice_items.flatten.max_by {|ii| ii.quantity}
-    others        = invoice_items.flatten.find_all {|ii| ii.quantity == top_invoice_item_by_quantity.quantity}
-    others.map {|ii| @se.items.find_by_id(ii.item_id)}
+    merchants_with_only_one_item.find_all do
+      |merchant| merchant.created_at.strftime("%B") == month
+    end
   end
 
   def all_merchants
-    se.merchants.all
+    @se.merchants.all
   end
 
   def all_invoices
-    se.invoices.all
+    @se.invoices.all
+  end
+
+  def all_items
+    se.items.all
   end
 end
-
