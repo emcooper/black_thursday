@@ -17,7 +17,7 @@ class ItemRepository
   def inspect
     "#<#{self.class} #{@items.size} rows>"
   end
-  
+
   def find_by_id(id_number)
     matching_item = @all.find do |item|
       item.id == id_number
