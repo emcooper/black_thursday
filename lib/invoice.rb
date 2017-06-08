@@ -2,7 +2,8 @@ require 'time'
 require 'pry'
 
 class Invoice
-  attr_reader :id, :customer_id, :merchant_id, :status, :created_at, :updated_at, :repo
+  attr_reader :id, :customer_id, :merchant_id, :status, :created_at,
+              :updated_at, :repo
 
   def initialize(attributes, repo)
     @id           = attributes[:id].to_i
@@ -39,6 +40,6 @@ class Invoice
 
   def total
     invoice_items = @repo.se.invoice_items.find_all_by_invoice_id(@id)
-    invoice_items.reduce(0) {|sum, item| sum += (item.quantity * item.unit_price)}
+    invoice_items.reduce(0) {|sum, item| sum += (item.revenue)}
   end
 end

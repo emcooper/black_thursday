@@ -3,7 +3,8 @@ require'pry'
 
 
 class InvoiceItem
-    attr_reader :id, :item_id, :invoice_id, :quantity, :unit_price, :created_at, :updated_at, :repo
+    attr_reader :id, :item_id, :invoice_id, :quantity, :unit_price, :created_at,
+    :updated_at, :repo
 
   def initialize(attributes, repo)
     @id         =   attributes[:id].to_i
@@ -19,10 +20,10 @@ class InvoiceItem
   def unit_price_to_dollars
     @unit_price.to_f
   end
-  
-  def revenue 
+
+  def revenue
     @quantity * @unit_price
-  end 
+  end
 
   def item
       @repo.se.items.find_by_id(@item_id)
