@@ -1,6 +1,4 @@
 require_relative 'sales_engine'
-require'pry'
-
 
 class InvoiceItem
     attr_reader :id, :item_id, :invoice_id, :quantity, :unit_price, :created_at,

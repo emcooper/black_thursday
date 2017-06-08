@@ -1,4 +1,4 @@
-require_relative '../lib/customer'
+require_relative "../lib/customer"
 require_relative "repository"
 
 class CustomerRepository

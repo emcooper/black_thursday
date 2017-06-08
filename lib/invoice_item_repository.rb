@@ -1,10 +1,10 @@
-require 'pry'
-require "csv"
 require_relative "invoice_item"
-require "bigdecimal"
-require "bigdecimal/util"
-require "time"
 require_relative "repository"
+require "bigdecimal/util"
+require "bigdecimal"
+require "time"
+require "csv"
+
 
 class InvoiceItemRepository
   include Repository

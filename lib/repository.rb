@@ -1,5 +1,3 @@
-require 'pry'
-
 module Repository
 
   def from_csv(file_path)
