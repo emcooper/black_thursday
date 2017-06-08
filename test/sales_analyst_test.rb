@@ -246,6 +246,14 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 3, actual_2.count
   end
 
+  def test_most_sold_item_for_merchant_return_list_items_per_merchant
+    se = create_sales_engine_with_it4_fixtures
+    sa = SalesAnalyst.new(se)
+
+    assert_instance_of Item, sa.most_sold_item_for_merchant(12334105).sample
+    assert_equal 263454779, sa.most_sold_item_for_merchant(12334105).first.id
+  end
+
   def new_sales_analyst_with_merchants_and_invoices_fixtures
     SalesAnalyst.new(SalesEngine.from_csv({
                             :invoices  => "test/data/it-2/invoices.csv",

@@ -159,6 +159,16 @@ class SalesAnalyst
     merchants_with_only_one_item.find_all {|merchant| merchant.created_at.strftime("%B") == month}
   end
 
+  def most_sold_item_for_merchant(merchant_id)
+    invoices      = @se.invoices.find_all_by_merchant_id(merchant_id)
+    paid_invoices = invoices.find_all {|invoice| invoice.is_paid_in_full?}
+    invoice_ids   = paid_invoices.map {|invoice| invoice.id}
+    invoice_items = invoice_ids.map {|id| @se.invoice_items.find_all_by_invoice_id(id)}
+    top_invoice_item_by_quantity = invoice_items.flatten.max_by {|ii| ii.quantity}
+    others        = invoice_items.flatten.find_all {|ii| ii.quantity == top_invoice_item_by_quantity.quantity}
+    others.map {|ii| @se.items.find_by_id(ii.item_id)}
+  end
+
   def all_merchants
     se.merchants.all
   end
