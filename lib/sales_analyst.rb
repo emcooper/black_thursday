@@ -1,5 +1,4 @@
 require_relative 'sales_engine'
-require'pry'
 require 'date'
 
 class SalesAnalyst

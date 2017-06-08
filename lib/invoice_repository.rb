@@ -1,7 +1,6 @@
-require "csv"
-require_relative "invoice"
 require_relative "repository"
-require 'pry'
+require_relative "invoice"
+require "csv"
 
 class InvoiceRepository
   include Repository

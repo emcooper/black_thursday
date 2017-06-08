@@ -1,7 +1,6 @@
 require_relative "test_helper"
 require_relative "../lib/transaction_repository"
 
-
 class TransactionRepositoryTest < Minitest::Test
 
   def test_it_initializes_transactions_with_empty_array

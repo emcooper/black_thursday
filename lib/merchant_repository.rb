@@ -1,7 +1,6 @@
-require 'pry'
-require "csv"
-require_relative "merchant"
 require_relative "repository"
+require_relative "merchant"
+require "csv"
 
 class MerchantRepository
   include Repository

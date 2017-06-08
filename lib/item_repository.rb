@@ -1,9 +1,8 @@
-require 'pry'
-require "csv"
+require_relative "repository"
+require "bigdecimal/util"
 require_relative "item"
 require "bigdecimal"
-require "bigdecimal/util"
-require_relative "repository"
+require "csv"
 
 class ItemRepository
   include Repository
