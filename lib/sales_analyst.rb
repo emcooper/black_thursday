@@ -105,6 +105,16 @@ class SalesAnalyst
     merchants.uniq
   end
   
+  def best_item_for_merchant(merchant_id)
+    invoices = @se.invoices.find_all_by_merchant_id(merchant_id)
+    paid_invoices = invoices.find_all {|invoice| invoice.is_paid_in_full?}
+    invoice_items = paid_invoices.map do |invoice| 
+      se.invoice_items.find_all_by_invoice_id(invoice.id)
+    end 
+    top_invoice_item = invoice_items.flatten.max_by {|ii| ii.revenue}
+    @se.items.find_by_id(top_invoice_item.item_id)
+  end 
+
   def sum_of_item_prices(merchant)
     merchant.items.reduce(0) {|sum, item| sum += item.unit_price}
   end

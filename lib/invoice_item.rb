@@ -19,6 +19,10 @@ class InvoiceItem
   def unit_price_to_dollars
     @unit_price.to_f
   end
+  
+  def revenue 
+    @quantity * @unit_price
+  end 
 
   def item
       @repo.se.items.find_by_id(@item_id)

@@ -245,6 +245,15 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 3, actual_2.count
   end
   
+
+  def test_best_item_for_merchant_returns_highest_revenue_item
+    se = create_sales_engine_with_it4_fixtures
+    sa = SalesAnalyst.new(se)
+    
+    assert_equal "floating Golf Green", sa.best_item_for_merchant(12334105).name
+    assert_equal "MicroScape digital", sa.best_item_for_merchant(12334112).name
+  end 
+
   def test_merchants_ranked_by_revenue_returns_correct_ranking
     se = create_sales_engine_with_it4_fixtures
     sa = SalesAnalyst.new(se)
@@ -260,6 +269,7 @@ class SalesAnalystTest < Minitest::Test
     assert_instance_of Item, sa.most_sold_item_for_merchant(12334105).sample
     assert_equal 263454779, sa.most_sold_item_for_merchant(12334105).first.id
   end
+
 
   def new_sales_analyst_with_merchants_and_invoices_fixtures
     SalesAnalyst.new(SalesEngine.from_csv({
