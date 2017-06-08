@@ -1,6 +1,5 @@
 require 'pry'
 
-
 module Repository
 
   def from_csv(file_path)
@@ -9,7 +8,7 @@ module Repository
       @all << child.new(row, self)
     end
   end
-  
+
   def child
     return Merchant    if self.class.name == "MerchantRepository"
     return Item        if self.class.name == "ItemRepository"
@@ -17,5 +16,5 @@ module Repository
     return InvoiceItem if self.class.name == "InvoiceItemRepository"
     return Transaction if self.class.name == "TransactionRepository"
     return Customer    if self.class.name == "CustomerRepository"
-  end 
-end 
+  end
+end
