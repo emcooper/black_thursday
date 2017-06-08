@@ -90,6 +90,13 @@ class SalesAnalyst
     paid_invoices(merchant_id).reduce(0) {|sum, invoice| sum += invoice.total}
   end
 
+  def top_month_for_merch(merchant_id)
+    monthly_rev = paid_invoice_items(merchant_id).reduce(Hash.new(0)) do |h, ii|
+       h[ii.created_at.strftime("%B")] += ii.revenue; h
+    end
+    monthly_rev.max_by {|k, v| v}[0]
+  end
+
   def top_revenue_earners(number = 20)
     merchants_ranked_by_revenue[0..number-1]
   end

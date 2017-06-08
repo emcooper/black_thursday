@@ -244,23 +244,23 @@ class SalesAnalystTest < Minitest::Test
     assert_equal "June", actual_2.sample.created_at.strftime("%B")
     assert_equal 3, actual_2.count
   end
-  
+
 
   def test_best_item_for_merchant_returns_highest_revenue_item
     se = create_sales_engine_with_it4_fixtures
     sa = SalesAnalyst.new(se)
-    
+
     assert_equal "floating Golf Green", sa.best_item_for_merchant(12334105).name
     assert_equal "MicroScape digital", sa.best_item_for_merchant(12334112).name
-  end 
+  end
 
   def test_merchants_ranked_by_revenue_returns_correct_ranking
     se = create_sales_engine_with_it4_fixtures
     sa = SalesAnalyst.new(se)
-    
+
     assert_equal "Shopin1901", sa.merchants_ranked_by_revenue.first.name
     assert_equal 25, sa.merchants_ranked_by_revenue.count
-  end 
+  end
 
   def test_most_sold_item_for_merchant_return_list_items_per_merchant
     se = create_sales_engine_with_it4_fixtures
@@ -270,6 +270,12 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 263454779, sa.most_sold_item_for_merchant(12334105).first.id
   end
 
+  def test_top_month_for_merch_returns_month
+    se = create_sales_engine_with_it4_fixtures
+    sa = SalesAnalyst.new(se)
+
+    assert_equal "March", sa.top_month_for_merch(12334105)
+  end
 
   def new_sales_analyst_with_merchants_and_invoices_fixtures
     SalesAnalyst.new(SalesEngine.from_csv({
