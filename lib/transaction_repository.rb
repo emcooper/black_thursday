@@ -16,8 +16,7 @@ class TransactionRepository
   end
 
   def find_by_id(id)
-    match = @all.find {|transaction| transaction.id == id}
-    return match
+    @all.find {|transaction| transaction.id == id}
   end
 
   def find_all_by_invoice_id(invoice_id)
@@ -43,5 +42,4 @@ class TransactionRepository
     end
     return  matches.flatten.compact
   end
-
 end

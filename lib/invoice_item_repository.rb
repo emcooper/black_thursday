@@ -20,25 +20,22 @@ class InvoiceItemRepository
   end
 
   def find_by_id(id)
-    matching_item = @all.find do |invoice_item|
-      invoice_item.id == id
-    end
-    return matching_item
+    @all.find {|invoice_item| invoice_item.id == id}
   end
 
   def find_all_by_item_id(item_id)
-    matching_items = @all.find_all do |invoice_item|
+    matches = []
+    matches << @all.find_all do |invoice_item|
       invoice_item.item_id == item_id
     end
-    return [] if matching_items.nil?
-    return matching_items
+    return matches.flatten.compact
   end
 
   def find_all_by_invoice_id(invoice_id)
-    matching_items =  @all.find_all do |invoice_item|
+    matches = []
+    matches << @all.find_all do |invoice_item|
       invoice_item.invoice_id == invoice_id
     end
-    return [] if matching_items.nil?
-    return matching_items
+    return matches.flatten.compact
   end
 end
