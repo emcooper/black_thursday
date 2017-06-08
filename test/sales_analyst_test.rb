@@ -212,9 +212,8 @@ class SalesAnalystTest < Minitest::Test
     sa = SalesAnalyst.new(se)
 
     assert_instance_of Merchant, sa.merchants_with_pending_invoices.sample
-    assert (sa.merchants_with_pending_invoices.map {|m| m.name}).include?("Shopin1901")
+    assert sa.merchants_with_pending_invoices.sample.invoices.any? {|invoice| !invoice.is_paid_in_full?}
   end
-
 
   def test_total_revenue_by_date_returns_dollar_amount
     se = create_sales_engine_with_it4_fixtures
@@ -245,6 +244,14 @@ class SalesAnalystTest < Minitest::Test
     assert_equal "June", actual_2.sample.created_at.strftime("%B")
     assert_equal 3, actual_2.count
   end
+  
+  def test_merchants_ranked_by_revenue_returns_correct_ranking
+    se = create_sales_engine_with_it4_fixtures
+    sa = SalesAnalyst.new(se)
+    
+    assert_equal "Shopin1901", sa.merchants_ranked_by_revenue.first.name
+    assert_equal 25, sa.merchants_ranked_by_revenue.count
+  end 
 
   def new_sales_analyst_with_merchants_and_invoices_fixtures
     SalesAnalyst.new(SalesEngine.from_csv({
