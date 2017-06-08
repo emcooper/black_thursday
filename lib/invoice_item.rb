@@ -24,4 +24,11 @@ class InvoiceItem
     @quantity * @unit_price
   end 
 
+  def item
+      @repo.se.items.find_by_id(@item_id)
+  end
+
+  def invoice
+    @repo.se.invoice.find_by_id(@invoice_id)
+  end
 end

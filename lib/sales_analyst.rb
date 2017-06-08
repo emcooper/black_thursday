@@ -89,13 +89,19 @@ class SalesAnalyst
   end
 
   def top_revenue_earners(number = 20)
-    sorted_merchants = all_merchants.sort_by {|merchant| revenue_by_merchant(merchant.id)}
-    sorted_merchants.reverse[0..number-1]
+    merchants_ranked_by_revenue[0..number-1]
   end
+  
+  def merchants_ranked_by_revenue
+    sorted_ascending = all_merchants.sort_by do |merchant| 
+      revenue_by_merchant(merchant.id)
+    end
+    sorted_ascending.reverse
+  end 
 
   def merchants_with_pending_invoices
-    pending_invoices = @se.invoices.all.find_all {|invoice| invoice.status == :pending}
-    merchants = pending_invoices.map {|invoice| invoice.merchant}
+    unpaid_invoices = @se.invoices.all.reject {|invoice| invoice.is_paid_in_full?}
+    merchants = unpaid_invoices.map {|invoice| invoice.merchant}
     merchants.uniq
   end
   
@@ -169,6 +175,16 @@ class SalesAnalyst
     merchants_with_only_one_item.find_all {|merchant| merchant.created_at.strftime("%B") == month}
   end
 
+  def most_sold_item_for_merchant(merchant_id)
+    invoices      = @se.invoices.find_all_by_merchant_id(merchant_id)
+    paid_invoices = invoices.find_all {|invoice| invoice.is_paid_in_full?}
+    invoice_ids   = paid_invoices.map {|invoice| invoice.id}
+    invoice_items = invoice_ids.map {|id| @se.invoice_items.find_all_by_invoice_id(id)}
+    top_invoice_item_by_quantity = invoice_items.flatten.max_by {|ii| ii.quantity}
+    others        = invoice_items.flatten.find_all {|ii| ii.quantity == top_invoice_item_by_quantity.quantity}
+    others.map {|ii| @se.items.find_by_id(ii.item_id)}
+  end
+
   def all_merchants
     se.merchants.all
   end
@@ -178,15 +194,3 @@ class SalesAnalyst
   end
 end
 
-# testing against spec harness - will delete later
-# se =  SalesEngine.from_csv({
-#   :items => "./data/items.csv",
-#   :merchants => "./data/merchants.csv",
-#   :invoices => "./data/invoices.csv",
-#   :invoice_items => "./data/invoice_items.csv",
-#   :transactions => "./data/transactions.csv",
-#   :customers => "./data/customers.csv"
-# })
-# sa = SalesAnalyst.new(se)
-# puts "spec: #{sa.revenue_by_merchant(12334634).to_i}"
-# puts "mine: #{sa.revenue_by_merchant(12334942).to_i}"
