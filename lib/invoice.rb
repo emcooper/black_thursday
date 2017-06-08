@@ -14,31 +14,31 @@ class Invoice
     @repo         = repo
   end
 
-  def merchant 
+  def merchant
     @repo.se.merchants.find_by_id(@merchant_id)
-  end 
-  
-  def items 
+  end
+
+  def items
     invoice_items = @repo.se.invoice_items.find_all_by_invoice_id(@id)
     item_ids = invoice_items.map {|ii| ii.item_id}
     repo.se.items.all.find_all {|item| item_ids.include?(item.id)}
-  end 
-  
+  end
+
   def transactions
     @repo.se.transactions.find_all_by_invoice_id(@id)
-  end 
-  
-  def customer 
+  end
+
+  def customer
     @repo.se.customers.find_by_id(@customer_id)
-  end 
-  
+  end
+
   def is_paid_in_full?
     results = transactions.map {|trans| trans.result}
     results.include?("success")
-  end 
-  
-  def total 
+  end
+
+  def total
     invoice_items = @repo.se.invoice_items.find_all_by_invoice_id(@id)
     invoice_items.reduce(0) {|sum, item| sum += (item.quantity * item.unit_price)}
-  end 
+  end
 end
