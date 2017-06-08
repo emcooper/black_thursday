@@ -21,34 +21,34 @@ class InvoiceRepository
   end
 
   def find_all_by_customer_id(customer_id)
-    matching_invoices = []
-    matching_invoices << @all.find_all do |invoice|
+    matches = []
+    matches << @all.find_all do |invoice|
       invoice.customer_id == customer_id
     end
-    return matching_invoices.flatten.compact
+    return matches.flatten.compact
   end
 
   def find_all_by_merchant_id(merchant_id)
-    matching_invoices = []
-    matching_invoices << @all.find_all do |invoice|
+    matches = []
+    matches << @all.find_all do |invoice|
       invoice.merchant_id == merchant_id
     end
-    return matching_invoices.flatten.compact
+    return matches.flatten.compact
   end
 
   def find_all_ids_by_date_created(date)
-    matching_invoices = []
-    matching_invoices << @all.find_all do |invoice|
+    matches = []
+    matches << @all.find_all do |invoice|
       invoice.created_at == date
     end
-    matching_invoices.flatten.compact.map {|invoice| invoice.id}
+    matches.flatten.compact.map {|invoice| invoice.id}
   end
 
   def find_all_by_status(status)
-    matching_invoices = []
-    matching_invoices << @all.find_all do |invoice|
+    matches = []
+    matches << @all.find_all do |invoice|
       invoice.status == status
     end
-    return matching_invoices.flatten.compact
+    return matches.flatten.compact
   end
 end
